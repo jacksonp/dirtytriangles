@@ -1,0 +1,1 @@
+export const SET_INPUT_IMAGE = 'SET_INPUT_IMAGE';
