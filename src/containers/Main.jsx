@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {setInputImage, evolutionChangeState} from '../actions'
+import {setInputImage, evolutionChangeState, changeNumVertices} from '../actions'
 import Evolve from '../components/Evolve'
 
 const mapStateToProps = (state) => {
@@ -7,7 +7,9 @@ const mapStateToProps = (state) => {
         inputImage: state.inputImage,
         canvasWidth: state.canvasWidth,
         canvasHeight: state.canvasHeight,
-        evolutionState: state.evolutionState
+        evolutionState: state.evolutionState,
+        minVertices: state.minVertices,
+        maxVertices: state.maxVertices,
     }
 };
 
@@ -21,6 +23,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onPause: () => {
             dispatch(evolutionChangeState('EVOLUTION_PAUSE'))
+        },
+        onNumVerticesChange: (numVertices) => {
+            dispatch(changeNumVertices(numVertices))
         }
     }
 };

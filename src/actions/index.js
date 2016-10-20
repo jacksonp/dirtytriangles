@@ -1,4 +1,4 @@
-import {SET_INPUT_IMAGE, EVOLUTION_STATE} from './types'
+import {SET_INPUT_IMAGE, EVOLUTION_STATE, CHANGE_NUM_VERTICES} from './types'
 import {eCreate, eStep, eDraw} from '../dt/run'
 
 const STEPS_PER_INTERVAL = 5; // 100
@@ -62,7 +62,7 @@ export function evolutionChangeState(evolutionState) {
                     const step = function () {
                         const state = getState();
                         for (let i = 0; i < STEPS_PER_INTERVAL; i++) {
-                            if (eStep() === 0) { // Perfect fitness, say a blank canvas.
+                            if (eStep(state) === 0) { // Perfect fitness, say a blank canvas.
                                 evolutionChangeState('EVOLUTION_PAUSE');
                             }
                         }
@@ -78,5 +78,13 @@ export function evolutionChangeState(evolutionState) {
 
         dispatch(evolutionSetState(evolutionState));
 
+    }
+}
+
+export function changeNumVertices([minVertices, maxVertices]) {
+    return {
+        type: CHANGE_NUM_VERTICES,
+        minVertices: minVertices,
+        maxVertices: maxVertices,
     }
 }

@@ -1,4 +1,4 @@
-import {SET_INPUT_IMAGE, EVOLUTION_STATE} from '../actions/types'
+import {SET_INPUT_IMAGE, EVOLUTION_STATE, CHANGE_NUM_VERTICES} from '../actions/types'
 
 const MAX_CANVAS_DIMENSION = 512;
 
@@ -6,7 +6,11 @@ const initialState = {
     inputImage: null,
     canvasWidth: null,
     canvasHeight: null,
-    evolutionState: 'EVOLUTION_PAUSE'
+    evolutionState: 'EVOLUTION_PAUSE',
+    minVertices: 3,
+    maxVertices: 4,
+    mutateFn: 'randomFn',
+    stepsBeforeHeuristics: 20000
 };
 
 const evolve = (state = initialState, action) => {
@@ -35,6 +39,11 @@ const evolve = (state = initialState, action) => {
         case EVOLUTION_STATE:
             return Object.assign({}, state, {
                 evolutionState: action.evolutionState
+            });
+        case CHANGE_NUM_VERTICES:
+            return Object.assign({}, state, {
+                minVertices: action.minVertices,
+                maxVertices: action.maxVertices,
             });
         default:
             return state

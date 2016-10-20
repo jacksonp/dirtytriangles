@@ -9,7 +9,7 @@ import {Poly} from './polys'
 
 export default class Mutate {
 
-    constructor(stats, imgWidthNoMargin, imgHeightNoMargin, margin, maxDim, iniVertices, maxVertices, palette, breakUpPolys, removeAUselessVertex, stepsBeforeHeuristics) {
+    constructor(stats, imgWidthNoMargin, imgHeightNoMargin, margin, maxDim, palette, breakUpPolys, removeAUselessVertex, stepsBeforeHeuristics) {
         this.stats = stats;
         this.imgWidthNoMargin = imgWidthNoMargin;
         this.imgHeightNoMargin = imgHeightNoMargin;
@@ -17,8 +17,6 @@ export default class Mutate {
         this.height = imgHeightNoMargin + margin + margin;
         this.margin = margin;
         this.maxDim = maxDim;
-        this.iniVertices = iniVertices;
-        this.maxVertices = maxVertices;
         this.palette = palette;
         this.breakUpPolys = breakUpPolys;
         this.removeAUselessVertex = removeAUselessVertex;
@@ -36,11 +34,7 @@ export default class Mutate {
 
     }
 
-    _isAddVertexPossible() {
-        return this.breakUpPolys || this.removeAUselessVertex || this.iniVertices !== this.maxVertices;
-    }
-
-    gaussian(polySet) {
+    gaussian(polySet, state) {
 
         const
             bellDistribs = [],
@@ -150,7 +144,7 @@ export default class Mutate {
 
     }
 
-    randomOne(polySet) {
+    randomOne(polySet, state) {
         var
             randPolyId = rng.getInt(polySet.length - 1),
             roulette = rng.getFloat(2.0), // equally likely to change colour/alpha as shape
@@ -205,7 +199,7 @@ export default class Mutate {
 
     }
 
-    randomAll(polySet) {
+    randomAll(polySet, state) {
         var
             randPolyId = rng.getInt(polySet.length - 1),
             randPolyCoord = rng.getInt(polySet[randPolyId].coords.length - 1);
@@ -245,7 +239,7 @@ export default class Mutate {
     }
 
     // TODO: check why this is sometimes called with empty array.
-    delta(polySet) {
+    delta(polySet, state) {
 
         if (polySet.length === 0) {
             return;
@@ -319,15 +313,13 @@ export default class Mutate {
 
     // Note this function should not be used as the only mutation option: it does not change the colour.
     // So e.g. you might just get a canvas that stays blank if all the initial polygons are fully transparent.
-    addVertex(polySet) {
+    addVertex(polySet, state) {
 
         var
-            maxCoords = this.maxVertices * 2,
+            maxCoords = state.maxVertices * 2,
             getRandPolyId = function () {
-                var
-                    i,
-                    r = rng.getInt(polySet.length - 1); // start search at a random point
-                for (i = 0; i < polySet.length; i += 1) {
+                let r = rng.getInt(polySet.length - 1); // start search at a random point
+                for (let i = 0; i < polySet.length; i += 1) {
                     if (polySet[r].coords.length < maxCoords) {
                         return r;
                     }
@@ -391,30 +383,27 @@ export default class Mutate {
 
     }
 
-    rotateFns(polySet) {
+    rotateFns(polySet, state) {
         const
             fns = ['randomOne', 'gaussian', 'delta', 'addVertex', 'randomAll'], // in rotation order
             fn = fns[Math.floor(this.stats.numSteps / 128) % fns.length];
-        return this[fn](polySet);
+        return this[fn](polySet, state);
     }
 
-    randomFn(polySet) {
-        const fns = ['gaussian', 'randomOne', 'randomAll', 'delta'];
-        if (this._isAddVertexPossible()) {
-            fns.push('addVertex');
-        }
+    randomFn(polySet, state) {
+        const fns = ['gaussian', 'randomOne', 'randomAll', 'delta', 'addVertex'];
         const selectedFn = rng.el(fns);
-        return this[selectedFn](polySet);
+        return this[selectedFn](polySet, state);
     }
 
-    weighted(polySet) {
+    weighted(polySet, state) {
         var
             f, r, rand,
             ratios = {},
             total = 0;
 
         if (this.stats.numSteps < 2 * this.stepsBeforeHeuristics) { // some relevant ops don't take place before stepsBeforeHeuristics, we need to let them happen first.
-            return this.randomFn(polySet);
+            return this.randomFn(polySet, state);
         }
 
         for (f in this.stats.mutationFns.improvements) { // this only looks at fns where there have been improvements, but you'd think after so many steps...
@@ -431,7 +420,7 @@ export default class Mutate {
         for (f in ratios) {
             if (ratios.hasOwnProperty(f)) {
                 if (total + ratios[f] > rand) {
-                    return this[f](polySet);
+                    return this[f](polySet, state);
                 } else {
                     total += ratios[f];
                 }
@@ -439,7 +428,7 @@ export default class Mutate {
         }
 
         // failsafe: should never get here
-        return this.randomFn(polySet);
+        return this.randomFn(polySet, state);
 
     }
 

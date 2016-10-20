@@ -9,9 +9,8 @@ export default class Evolver {
     constructor(inputImage, imgWidthNoMargin, imgHeightNoMargin, margin,
                 maxSizePerc,
                 iniPolygons, maxPolygons,
-                iniVertices, maxVertices,
                 palette, breakUpPolys, removeAUselessVertex, removeAUselessPoly,
-                stepsBeforeHeuristics, mutateFn, scale, ctxDisplay) {
+                stepsBeforeHeuristics, scale, ctxDisplay) {
 
 
         this.stats = {
@@ -40,8 +39,6 @@ export default class Evolver {
         this.margin = margin;
         this.iniPolygons = iniPolygons;
         this.maxPolygons = maxPolygons;
-        this.iniVertices = iniVertices;
-        this.maxVertices = maxVertices;
         this.palette = palette;
         this.breakUpPolys = breakUpPolys;
         this.removeAUselessVertex = removeAUselessVertex;
@@ -68,9 +65,6 @@ export default class Evolver {
         canvasWorking2.setAttribute('height', this.imgHeight);
         this.ctxWorking2 = canvasWorking2.getContext('2d', {alpha: false});
 
-        this.mutator = new Mutate(this.stats, this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.maxDim, iniVertices, maxVertices, palette, breakUpPolys, removeAUselessVertex, stepsBeforeHeuristics);
-        this.mutateFn = mutateFn;
-
         // this.canvasWorking is not visible, use it temporarily to establish our this.target:
         // draw the image onto the canvas:
         this.ctxWorking.drawImage(inputImage, this.margin, this.margin, this.imgWidthNoMargin, this.imgHeightNoMargin);
@@ -83,6 +77,8 @@ export default class Evolver {
 
         // set both to min fitness initially:
         this.fitnessBest = this.fitnessWorking = this.target.getMinFitness();
+
+        this.mutator = new Mutate(this.stats, this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.maxDim, palette, breakUpPolys, removeAUselessVertex, stepsBeforeHeuristics);
 
         // start with a random poly/vertex, not always the first
         this.uselessPolyIndex = rng.getUInt32();
@@ -179,8 +175,8 @@ export default class Evolver {
 
     }
 
-    addAPoly() {
-        const poly = Poly.makeRandom(this.imgWidth, this.imgHeight, this.iniVertices, this.maxDim, 'colourRandom', this.palette);
+    addAPoly(numVertices) {
+        const poly = Poly.makeRandom(this.imgWidth, this.imgHeight, numVertices, this.maxDim, 'colourRandom', this.palette);
 
         this.polySetWorking.push(poly);
         const newFitness = this.calcFitness(this.ctxWorking, this.polySetWorking);
@@ -196,7 +192,7 @@ export default class Evolver {
      * Returns the fitness at the end of the step, or null if no mutation took place.
      *
      */
-    step() {
+    step(state) {
 
         this.stats.numSteps += 1;
 
@@ -205,7 +201,7 @@ export default class Evolver {
             numSteps = this.stats.numSteps;
 
         if (this.polySetWorking.length === 0 || (this.polySetWorking.length < this.maxPolygons && numSteps % 199 === 0)) { // 199 is prime
-            this.addAPoly();
+            this.addAPoly(state.minVertices);
         }
 
         //if (numSteps > this.stepsBeforeHeuristics) {
@@ -218,14 +214,14 @@ export default class Evolver {
             this._removeAUselessPoly(this.removeAUselessPoly);
         }
 
-        if (this.breakUpPolys && this.polySetWorking.length < this.maxPolygons && (this.iniVertices > 3 || this.maxVertices > 3) && numSteps % 131 === 0) { // 131 is prime
+        if (this.breakUpPolys && numSteps % 131 === 0) { // 131 is prime
             this._breakUpPoly();
         }
 
         //}
 
         // returns the index of the mutated poly if mutation tool place, null if no mutation took place:
-        mutateRes = this.mutator[this.mutateFn](this.polySetWorking);
+        mutateRes = this.mutator[state.mutateFn](this.polySetWorking, state);
 
         this.stats.mutationFns.calls[mutateRes.type] += 1;
 
@@ -260,8 +256,8 @@ export default class Evolver {
 
     }
 
-    iniRandomPolySet() {
-        this.polySetWorking = PolySet.create(this.iniPolygons, this.imgWidth, this.imgHeight, this.iniVertices, this.maxDim, 'colourIni', this.palette);
+    iniRandomPolySet(state) {
+        this.polySetWorking = PolySet.create(this.iniPolygons, this.imgWidth, this.imgHeight, state.minVertices, this.maxDim, 'colourIni', this.palette);
         this.polySetBest = PolySet.clone(this.polySetWorking);
     }
 
