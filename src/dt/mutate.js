@@ -1,5 +1,5 @@
 import * as rng from './rng'
-import {clamp} from './utils'
+import {clamp, calcMaxDim} from './utils'
 import {Poly} from './polys'
 
 /*
@@ -9,14 +9,13 @@ import {Poly} from './polys'
 
 export default class Mutate {
 
-    constructor(stats, imgWidthNoMargin, imgHeightNoMargin, margin, maxDim, palette, breakUpPolys, removeAUselessVertex, stepsBeforeHeuristics) {
+    constructor(stats, imgWidthNoMargin, imgHeightNoMargin, margin, palette, breakUpPolys, removeAUselessVertex, stepsBeforeHeuristics) {
         this.stats = stats;
         this.imgWidthNoMargin = imgWidthNoMargin;
         this.imgHeightNoMargin = imgHeightNoMargin;
         this.width = imgWidthNoMargin + margin + margin;
         this.height = imgHeightNoMargin + margin + margin;
         this.margin = margin;
-        this.maxDim = maxDim;
         this.palette = palette;
         this.breakUpPolys = breakUpPolys;
         this.removeAUselessVertex = removeAUselessVertex;
@@ -115,10 +114,11 @@ export default class Mutate {
         } else {   // mutate coords
 
             const
+                maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, state.canvasWidth, state.canvasHeight),
                 randPolyCoord = rng.getInt(polySet[randPolyId].coords.length - 1), //could be x or y.
-                boundingBox = Poly.getBoundingBox(this.width, this.height, this.maxDim, polySet[randPolyId], [randPolyCoord]);
+                boundingBox = Poly.getBoundingBox(this.width, this.height, maxDim, polySet[randPolyId], [randPolyCoord]);
 
-            let newVal = polySet[randPolyId].coords[randPolyCoord] + Math.round(this.maxDim / 2) - bellRandom(this.maxDim, this.maxDim / 2);
+            let newVal = polySet[randPolyId].coords[randPolyCoord] + Math.round(maxDim / 2) - bellRandom(maxDim, maxDim / 2);
 
             if (randPolyCoord % 2 === 0) { // even, so x-coordinate
                 newVal = clamp(newVal, boundingBox.minX, boundingBox.maxX);
@@ -179,11 +179,13 @@ export default class Mutate {
 
         } else { // mutate coords
             randPolyCoord = rng.getInt(polySet[randPolyId].coords.length - 1); //could be x or y.
-            const boundingBox = Poly.getBoundingBox(this.width, this.height, this.maxDim, polySet[randPolyId], [randPolyCoord]);
+            const
+                maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, state.canvasWidth, state.canvasHeight),
+                boundingBox = Poly.getBoundingBox(this.width, this.height, maxDim, polySet[randPolyId], [randPolyCoord]);
             if (randPolyCoord % 2 === 0) { // even, so x-coordinate
-                newVal = boundingBox.minX + rng.getInt(this.maxDim);
+                newVal = boundingBox.minX + rng.getInt(maxDim);
             } else { // y-coordinate
-                newVal = boundingBox.minY + rng.getInt(this.maxDim);
+                newVal = boundingBox.minY + rng.getInt(maxDim);
             }
             if (newVal === polySet[randPolyId].coords[randPolyCoord]) {
                 randPolyId = null; // nothing has changed, go to next evolutionary step.
@@ -220,15 +222,16 @@ export default class Mutate {
             polySet[randPolyId].colour.a = rng.getInt(1000) / 1000;
         }
 
+        const maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, state.canvasWidth, state.canvasHeight);
 
         if (randPolyCoord % 2 === 0) { // even, so randPolyCoord is x-coordinate
-            const boundingBox = Poly.getBoundingBox(this.width, this.height, this.maxDim, polySet[randPolyId], [randPolyCoord, randPolyCoord + 1]);
-            polySet[randPolyId].coords[randPolyCoord] = boundingBox.minX + rng.getInt(this.maxDim);
-            polySet[randPolyId].coords[randPolyCoord + 1] = boundingBox.minY + rng.getInt(this.maxDim);
+            const boundingBox = Poly.getBoundingBox(this.width, this.height, maxDim, polySet[randPolyId], [randPolyCoord, randPolyCoord + 1]);
+            polySet[randPolyId].coords[randPolyCoord] = boundingBox.minX + rng.getInt(maxDim);
+            polySet[randPolyId].coords[randPolyCoord + 1] = boundingBox.minY + rng.getInt(maxDim);
         } else { // randPolyCoord is y-coordinate
-            const boundingBox = Poly.getBoundingBox(this.width, this.height, this.maxDim, polySet[randPolyId], [randPolyCoord - 1, randPolyCoord]);
-            polySet[randPolyId].coords[randPolyCoord - 1] = boundingBox.minX + rng.getInt(this.maxDim);
-            polySet[randPolyId].coords[randPolyCoord] = boundingBox.minY + rng.getInt(this.maxDim);
+            const boundingBox = Poly.getBoundingBox(this.width, this.height, maxDim, polySet[randPolyId], [randPolyCoord - 1, randPolyCoord]);
+            polySet[randPolyId].coords[randPolyCoord - 1] = boundingBox.minX + rng.getInt(maxDim);
+            polySet[randPolyId].coords[randPolyCoord] = boundingBox.minY + rng.getInt(maxDim);
         }
 
         return {
@@ -368,12 +371,14 @@ export default class Mutate {
         midX = Math.round((poly.coords[randCoordIx] + poly.coords[randCoordJx]) / 2);
         midY = Math.round((poly.coords[randCoordIx + 1] + poly.coords[randCoordJx + 1]) / 2);
 
-        const boundingBox = Poly.getBoundingBox(this.imgWidth, this.imgHeight, this.maxDim, polySet[randPolyId]);
+        const
+            maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, state.canvasWidth, state.canvasHeight),
+            boundingBox = Poly.getBoundingBox(this.imgWidth, this.imgHeight, maxDim, polySet[randPolyId]);
 
         if (roulette < 0.5) {
-            poly.coords.splice(randCoordJx, 0, clamp(midX + Mutate._getDeltaInt(this.maxDim), boundingBox.minX, boundingBox.maxX), midY);
+            poly.coords.splice(randCoordJx, 0, clamp(midX + Mutate._getDeltaInt(maxDim), boundingBox.minX, boundingBox.maxX), midY);
         } else {
-            poly.coords.splice(randCoordJx, 0, midX, clamp(midY + Mutate._getDeltaInt(this.maxDim), boundingBox.minY, boundingBox.maxY));
+            poly.coords.splice(randCoordJx, 0, midX, clamp(midY + Mutate._getDeltaInt(maxDim), boundingBox.minY, boundingBox.maxY));
         }
 
         return {

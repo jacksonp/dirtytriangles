@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {setInputImage, evolutionChangeState, changeMaxPolygons, changeNumVertices} from '../actions'
+import {setInputImage, evolutionChangeState, changeMaxPolygons, changeNumVertices, changePolygonSize} from '../actions'
 import Evolve from '../components/Evolve'
 
 const mapStateToProps = (state) => {
@@ -11,6 +11,8 @@ const mapStateToProps = (state) => {
         maxPolygons: state.maxPolygons,
         minVertices: state.minVertices,
         maxVertices: state.maxVertices,
+        minPolygonSize: state.minPolygonSize,
+        maxPolygonSize: state.maxPolygonSize,
     }
 };
 
@@ -30,7 +32,11 @@ const mapDispatchToProps = (dispatch) => {
         },
         onNumVerticesChange: (numVertices) => {
             dispatch(changeNumVertices(numVertices))
+        },
+        onPolygonSizeChange: (polygonSize) => {
+            dispatch(changePolygonSize(polygonSize))
         }
+
     }
 };
 

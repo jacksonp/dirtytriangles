@@ -1,4 +1,4 @@
-import {SET_INPUT_IMAGE, EVOLUTION_STATE, CHANGE_MAX_POLYGONS, CHANGE_NUM_VERTICES} from './types'
+import {SET_INPUT_IMAGE, EVOLUTION_STATE, CHANGE_MAX_POLYGONS, CHANGE_NUM_VERTICES, CHANGE_POLYGON_SIZE} from './types'
 import {eCreate, eStep, eDraw} from '../dt/run'
 
 const STEPS_PER_INTERVAL = 5; // 100
@@ -93,5 +93,13 @@ export function changeNumVertices([minVertices, maxVertices]) {
         type: CHANGE_NUM_VERTICES,
         minVertices: minVertices,
         maxVertices: maxVertices,
+    }
+}
+
+export function changePolygonSize([minPolygonSize, maxPolygonSize]) {
+    return {
+        type: CHANGE_POLYGON_SIZE,
+        minPolygonSize: minPolygonSize,
+        maxPolygonSize: maxPolygonSize,
     }
 }

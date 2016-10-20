@@ -43,12 +43,6 @@ export default class Evolver {
         this.ctxDisplay = ctxDisplay;
         this.scale = scale;
 
-        if (this.imgWidthNoMargin > this.imgHeightNoMargin) {
-            this.maxDim = Math.round(maxSizePerc * this.imgWidthNoMargin / 100);
-        } else {
-            this.maxDim = Math.round(maxSizePerc * this.imgHeightNoMargin / 100);
-        }
-
         this.imgWidth = this.imgWidthNoMargin + this.margin + this.margin;
         this.imgHeight = this.imgHeightNoMargin + this.margin + this.margin;
 
@@ -75,7 +69,7 @@ export default class Evolver {
         // set both to min fitness initially:
         this.fitnessBest = this.fitnessWorking = this.target.getMinFitness();
 
-        this.mutator = new Mutate(this.stats, this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.maxDim, palette, breakUpPolys, removeAUselessVertex, stepsBeforeHeuristics);
+        this.mutator = new Mutate(this.stats, this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, palette, breakUpPolys, removeAUselessVertex, stepsBeforeHeuristics);
 
         // start with a random poly/vertex, not always the first
         this.uselessPolyIndex = rng.getUInt32();
@@ -172,8 +166,11 @@ export default class Evolver {
 
     }
 
-    addAPoly(numVertices) {
-        const poly = Poly.makeRandom(this.imgWidth, this.imgHeight, numVertices, this.maxDim, 'colourRandom', this.palette);
+    addAPoly(minPolygonSize, maxPolygonSize, numVertices) {
+
+        const
+            maxDim = Poly.makeDimension(minPolygonSize, maxPolygonSize, this.imgWidth, this.imgHeight),
+            poly = Poly.makeRandom(this.imgWidth, this.imgHeight, numVertices, maxDim, 'colourRandom', this.palette);
 
         this.polySetWorking.push(poly);
         const newFitness = this.calcFitness(this.ctxWorking, this.polySetWorking);
@@ -198,7 +195,7 @@ export default class Evolver {
             numSteps = this.stats.numSteps;
 
         if (this.polySetWorking.length === 0 || (this.polySetWorking.length < state.maxPolygons && numSteps % 199 === 0)) { // 199 is prime
-            this.addAPoly(state.minVertices);
+            this.addAPoly(state.minPolygonSize, state.maxPolygonSize, state.minVertices);
         }
 
         //if (numSteps > this.stepsBeforeHeuristics) {

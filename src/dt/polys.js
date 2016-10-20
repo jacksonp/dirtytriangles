@@ -33,6 +33,15 @@ export class Poly {
         };
     }
 
+    static makeDimension(minSizePercentage, maxSizePercentage, width, height) {
+        const maxSizePerc = minSizePercentage + rng.getInt(maxSizePercentage - minSizePercentage);
+        if (width > height) {
+            return Math.round(maxSizePerc * width / 100);
+        } else {
+            return Math.round(maxSizePerc * height / 100);
+        }
+    }
+
     static colourIni() {
         return {
             r: 0,
