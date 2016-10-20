@@ -1,5 +1,7 @@
-import {SET_INPUT_IMAGE} from './types'
-import start from '../dt/run'
+import {SET_INPUT_IMAGE, EVOLUTION_STATE} from './types'
+import {eCreate, eStep} from '../dt/run'
+
+let evolveIntervalId;
 
 export function loadInputImage(inputImage) {
     return {
@@ -7,7 +9,6 @@ export function loadInputImage(inputImage) {
         inputImage: inputImage
     }
 }
-
 
 export function setInputImage(e) {
 
@@ -24,7 +25,8 @@ export function setInputImage(e) {
                     alert('Image could not be loaded.');
                 } else {
                     dispatch(loadInputImage(inputImage));
-                    start(getState());
+                    eCreate(getState());
+                    dispatch(evolutionRun());
                 }
 
             }
@@ -33,4 +35,33 @@ export function setInputImage(e) {
 
     }
 
+}
+
+export function evolutionSetState(evolutionState) {
+    return {
+        type: EVOLUTION_STATE,
+        evolutionState: evolutionState
+    }
+}
+
+export function evolutionRun() {
+
+    return function (dispatch, getState) {
+
+        dispatch(evolutionSetState('EVOLUTION_GO'));
+
+        const step = function () {
+            const state = getState();
+            if (eStep(state) === 0) { // Perfect fitness, say a blank canvas.
+                clearInterval(evolveIntervalId);
+                dispatch(evolutionSetState('EVOLUTION_DONE'));
+
+            }
+        };
+
+        evolveIntervalId = setInterval(step, 0); // 0 means go as fast as you can, could be limited to ~4ms intervals
+
+        // start(getState());
+
+    }
 }

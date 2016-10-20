@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import Canvas from './Canvas';
 
-const Welcome = ({inputImage, onInputImageChange}) => (
+const Welcome = ({inputImage, canvasWidth, canvasHeight, onInputImageChange}) => (
     <div>
         <h2>Evolve Images from Random Polygons</h2>
         <div id="illustration">
@@ -18,12 +18,14 @@ const Welcome = ({inputImage, onInputImageChange}) => (
             Select an image
             <input type="file" accept="image/*" onChange={onInputImageChange}/>
         </p>
-        { inputImage ? <Canvas inputImage={inputImage}/> : null }
+        { inputImage ? <Canvas canvasWidth={canvasWidth} canvasHeight={canvasHeight}/> : null }
     </div>
 );
 
 Welcome.propTypes = {
     inputImage: PropTypes.instanceOf(HTMLImageElement),
+    canvasWidth: PropTypes.number,
+    canvasHeight: PropTypes.number,
     onInputImageChange: PropTypes.func.isRequired
 };
 

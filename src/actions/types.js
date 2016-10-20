@@ -1,1 +1,2 @@
 export const SET_INPUT_IMAGE = 'SET_INPUT_IMAGE';
+export const EVOLUTION_STATE = 'EVOLUTION_STATE';

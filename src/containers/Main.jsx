@@ -4,7 +4,9 @@ import Welcome from '../components/Welcome'
 
 const mapStateToProps = (state) => {
     return {
-        inputImage: state.inputImage
+        inputImage: state.inputImage,
+        canvasWidth: state.canvasWidth,
+        canvasHeight: state.canvasHeight
     }
 };
 
