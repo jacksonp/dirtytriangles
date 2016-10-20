@@ -1,7 +1,9 @@
 import {SET_INPUT_IMAGE, EVOLUTION_STATE} from './types'
-import {eCreate, eStep} from '../dt/run'
+import {eCreate, eStep, eDraw} from '../dt/run'
 
-let evolveIntervalId;
+const STEPS_PER_INTERVAL = 5; // 100
+
+let evolveIntervalId = null;
 
 export function loadInputImage(inputImage) {
     return {
@@ -26,7 +28,7 @@ export function setInputImage(e) {
                 } else {
                     dispatch(loadInputImage(inputImage));
                     eCreate(getState());
-                    dispatch(evolutionRun());
+                    dispatch(evolutionChangeState('EVOLUTION_GO'));
                 }
 
             }
@@ -44,24 +46,37 @@ export function evolutionSetState(evolutionState) {
     }
 }
 
-export function evolutionRun() {
+export function evolutionChangeState(evolutionState) {
 
     return function (dispatch, getState) {
 
-        dispatch(evolutionSetState('EVOLUTION_GO'));
+        switch (evolutionState) {
+            case 'EVOLUTION_PAUSE':
+                if (evolveIntervalId) {
+                    clearInterval(evolveIntervalId);
+                    evolveIntervalId = null;
+                }
+                break;
+            case 'EVOLUTION_GO':
+                if (!evolveIntervalId) {
+                    const step = function () {
+                        const state = getState();
+                        for (let i = 0; i < STEPS_PER_INTERVAL; i++) {
+                            if (eStep() === 0) { // Perfect fitness, say a blank canvas.
+                                evolutionChangeState('EVOLUTION_PAUSE');
+                            }
+                        }
+                        eDraw();
+                    };
+                    // 0 means go as fast as you can, could be limited to ~4ms intervals
+                    evolveIntervalId = setInterval(step, 0);
+                }
+                break;
+            default:
+                throw 'Unexpected evolutionState';
+        }
 
-        const step = function () {
-            const state = getState();
-            if (eStep(state) === 0) { // Perfect fitness, say a blank canvas.
-                clearInterval(evolveIntervalId);
-                dispatch(evolutionSetState('EVOLUTION_DONE'));
-
-            }
-        };
-
-        evolveIntervalId = setInterval(step, 0); // 0 means go as fast as you can, could be limited to ~4ms intervals
-
-        // start(getState());
+        dispatch(evolutionSetState(evolutionState));
 
     }
 }

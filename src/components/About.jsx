@@ -1,7 +1,6 @@
-import React, {PropTypes} from 'react';
-import Canvas from './Canvas';
+import React from 'react'
 
-const Welcome = ({inputImage, canvasWidth, canvasHeight, onInputImageChange}) => (
+const About = () => (
     <div>
         <h2>Evolve Images from Random Polygons</h2>
         <div id="illustration">
@@ -13,20 +12,7 @@ const Welcome = ({inputImage, canvasWidth, canvasHeight, onInputImageChange}) =>
                 kept only if it makes the set of polygons look more like the target image, otherwise the mutation is
                 discarded.</p>
         </div>
-        <h3>Start a New Image</h3>
-        <p>
-            Select an image
-            <input type="file" accept="image/*" onChange={onInputImageChange}/>
-        </p>
-        { inputImage ? <Canvas canvasWidth={canvasWidth} canvasHeight={canvasHeight}/> : null }
     </div>
 );
 
-Welcome.propTypes = {
-    inputImage: PropTypes.instanceOf(HTMLImageElement),
-    canvasWidth: PropTypes.number,
-    canvasHeight: PropTypes.number,
-    onInputImageChange: PropTypes.func.isRequired
-};
-
-export default Welcome;
+export default About

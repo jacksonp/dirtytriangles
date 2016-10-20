@@ -1,7 +1,7 @@
 import * as rng from './rng'
 import {Poly, PolySet} from './polys'
 import {drawPolySet} from './render'
-import {GreyscaleTarget, DeltaE76Target} from './target'
+import {GreyscaleTarget, DeltaE76Target, SumSquaresTarget} from './target'
 import Mutate from './mutate'
 
 export default class Evolver {
@@ -78,7 +78,7 @@ export default class Evolver {
         if (palette === 'greyscale') {
             this.target = new GreyscaleTarget(this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.ctxWorking);
         } else {
-            this.target = new DeltaE76Target(this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.ctxWorking);
+            this.target = new SumSquaresTarget(this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.ctxWorking);
         }
 
         // set both to min fitness initially:

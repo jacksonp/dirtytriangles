@@ -5,7 +5,8 @@ const MAX_CANVAS_DIMENSION = 512;
 const initialState = {
     inputImage: null,
     canvasWidth: null,
-    canvasHeight: null
+    canvasHeight: null,
+    evolutionState: 'EVOLUTION_PAUSE'
 };
 
 const evolve = (state = initialState, action) => {
