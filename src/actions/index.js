@@ -1,4 +1,4 @@
-import {SET_INPUT_IMAGE, EVOLUTION_STATE, CHANGE_NUM_VERTICES} from './types'
+import {SET_INPUT_IMAGE, EVOLUTION_STATE, CHANGE_MAX_POLYGONS, CHANGE_NUM_VERTICES} from './types'
 import {eCreate, eStep, eDraw} from '../dt/run'
 
 const STEPS_PER_INTERVAL = 5; // 100
@@ -78,6 +78,13 @@ export function evolutionChangeState(evolutionState) {
 
         dispatch(evolutionSetState(evolutionState));
 
+    }
+}
+
+export function changeMaxPolygons(maxPolygons) {
+    return {
+        type: CHANGE_MAX_POLYGONS,
+        maxPolygons: maxPolygons
     }
 }
 

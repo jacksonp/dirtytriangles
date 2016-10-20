@@ -11,7 +11,6 @@ export function eCreate(state) {
 
     evolver = new Evolver(state.inputImage, state.canvasWidth, state.canvasHeight, 0,
         10,
-        0, 100,
         '24-bit', true, true, 0.75,
         state.stepsBeforeHeuristics, 1, ctxDisplay
     );

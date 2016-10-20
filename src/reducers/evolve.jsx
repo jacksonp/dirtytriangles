@@ -1,4 +1,4 @@
-import {SET_INPUT_IMAGE, EVOLUTION_STATE, CHANGE_NUM_VERTICES} from '../actions/types'
+import {SET_INPUT_IMAGE, EVOLUTION_STATE, CHANGE_MAX_POLYGONS, CHANGE_NUM_VERTICES} from '../actions/types'
 
 const MAX_CANVAS_DIMENSION = 512;
 
@@ -7,6 +7,7 @@ const initialState = {
     canvasWidth: null,
     canvasHeight: null,
     evolutionState: 'EVOLUTION_PAUSE',
+    maxPolygons: 100,
     minVertices: 3,
     maxVertices: 4,
     mutateFn: 'randomFn',
@@ -40,10 +41,14 @@ const evolve = (state = initialState, action) => {
             return Object.assign({}, state, {
                 evolutionState: action.evolutionState
             });
+        case CHANGE_MAX_POLYGONS:
+            return Object.assign({}, state, {
+                maxPolygons: action.maxPolygons
+            });
         case CHANGE_NUM_VERTICES:
             return Object.assign({}, state, {
                 minVertices: action.minVertices,
-                maxVertices: action.maxVertices,
+                maxVertices: action.maxVertices
             });
         default:
             return state

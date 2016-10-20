@@ -8,7 +8,6 @@ export default class Evolver {
 
     constructor(inputImage, imgWidthNoMargin, imgHeightNoMargin, margin,
                 maxSizePerc,
-                iniPolygons, maxPolygons,
                 palette, breakUpPolys, removeAUselessVertex, removeAUselessPoly,
                 stepsBeforeHeuristics, scale, ctxDisplay) {
 
@@ -37,8 +36,6 @@ export default class Evolver {
         this.imgWidthNoMargin = imgWidthNoMargin;
         this.imgHeightNoMargin = imgHeightNoMargin;
         this.margin = margin;
-        this.iniPolygons = iniPolygons;
-        this.maxPolygons = maxPolygons;
         this.palette = palette;
         this.breakUpPolys = breakUpPolys;
         this.removeAUselessVertex = removeAUselessVertex;
@@ -200,7 +197,7 @@ export default class Evolver {
             mutateRes,
             numSteps = this.stats.numSteps;
 
-        if (this.polySetWorking.length === 0 || (this.polySetWorking.length < this.maxPolygons && numSteps % 199 === 0)) { // 199 is prime
+        if (this.polySetWorking.length === 0 || (this.polySetWorking.length < state.maxPolygons && numSteps % 199 === 0)) { // 199 is prime
             this.addAPoly(state.minVertices);
         }
 
@@ -257,8 +254,10 @@ export default class Evolver {
     }
 
     iniRandomPolySet(state) {
-        this.polySetWorking = PolySet.create(this.iniPolygons, this.imgWidth, this.imgHeight, state.minVertices, this.maxDim, 'colourIni', this.palette);
-        this.polySetBest = PolySet.clone(this.polySetWorking);
+        // this.polySetWorking = PolySet.create(this.iniPolygons, this.imgWidth, this.imgHeight, state.minVertices, this.maxDim, 'colourIni', this.palette);
+        // this.polySetBest = PolySet.clone(this.polySetWorking);
+        this.polySetWorking = [];
+        this.polySetBest = [];
     }
 
     set polySet(polySet) {
