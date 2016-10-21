@@ -7,3 +7,8 @@ export function clamp(val, min, max) {
     }
     return val;
 }
+
+// get time-stamp in milliseconds
+export function getTimeStamp() {
+    return (new Date()).getTime();
+}

@@ -1,5 +1,12 @@
-import {SET_INPUT_IMAGE, EVOLUTION_STATE, CHANGE_MAX_POLYGONS, CHANGE_NUM_VERTICES, CHANGE_POLYGON_SIZE} from './types'
-import {eCreate, eStep, eDraw} from '../dt/run'
+import {
+    SET_INPUT_IMAGE,
+    EVOLUTION_STATE,
+    CHANGE_MAX_POLYGONS,
+    CHANGE_NUM_VERTICES,
+    CHANGE_POLYGON_SIZE,
+    EVOLUTION_REDRAW
+} from './types'
+import {eCreate, eStep, eDraw, ePause} from '../dt/run'
 
 const STEPS_PER_INTERVAL = 5; // 100
 
@@ -46,6 +53,13 @@ export function evolutionSetState(evolutionState) {
     }
 }
 
+export function evolutionRedraw(stepsPerSec) {
+    return {
+        type: EVOLUTION_REDRAW,
+        stepsPerSec: stepsPerSec
+    }
+}
+
 export function evolutionChangeState(evolutionState) {
 
     return function (dispatch, getState) {
@@ -53,6 +67,7 @@ export function evolutionChangeState(evolutionState) {
         switch (evolutionState) {
             case 'EVOLUTION_PAUSE':
                 if (evolveIntervalId) {
+                    ePause();
                     clearInterval(evolveIntervalId);
                     evolveIntervalId = null;
                 }
@@ -66,7 +81,7 @@ export function evolutionChangeState(evolutionState) {
                                 evolutionChangeState('EVOLUTION_PAUSE');
                             }
                         }
-                        eDraw();
+                        dispatch(evolutionRedraw(eDraw()));
                     };
                     // 0 means go as fast as you can, could be limited to ~4ms intervals
                     evolveIntervalId = setInterval(step, 0);

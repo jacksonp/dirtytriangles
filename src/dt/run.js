@@ -1,7 +1,9 @@
 import Evolver from './evolver'
 import {drawPolySet} from './render'
+import {getTimeStamp} from './utils'
 
-let
+let startMillis = null,
+    totMillis,
     ctxDisplay,
     evolver;
 
@@ -17,12 +19,24 @@ export function eCreate(state) {
 
     evolver.iniRandomPolySet(state);
 
+    totMillis = 0;
+
 }
 
 export function eStep(state) {
+    if (startMillis === null) {
+        startMillis = getTimeStamp();
+    }
     return evolver.step(state);
 }
 
 export function eDraw() {
     drawPolySet(ctxDisplay, evolver.polySetBest, evolver.imgWidth, evolver.imgHeight, evolver.scale);
+    // Return steps/sec
+    return Math.round(1000 * evolver.stats.numSteps / (totMillis + getTimeStamp() - startMillis));
+}
+
+export function ePause() {
+    totMillis += getTimeStamp() - startMillis;
+    startMillis = null;
 }

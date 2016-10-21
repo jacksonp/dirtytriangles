@@ -3,7 +3,8 @@ import {
     EVOLUTION_STATE,
     CHANGE_MAX_POLYGONS,
     CHANGE_NUM_VERTICES,
-    CHANGE_POLYGON_SIZE
+    CHANGE_POLYGON_SIZE,
+    EVOLUTION_REDRAW
 } from '../actions/types'
 
 const MAX_CANVAS_DIMENSION = 512;
@@ -62,6 +63,10 @@ const evolve = (state = initialState, action) => {
             return Object.assign({}, state, {
                 minPolygonSize: action.minPolygonSize,
                 maxPolygonSize: action.maxPolygonSize
+            });
+        case EVOLUTION_REDRAW:
+            return Object.assign({}, state, {
+                stepsPerSec: action.stepsPerSec
             });
         default:
             return state
