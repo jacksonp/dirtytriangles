@@ -36,50 +36,6 @@ export default class Mutate {
     gaussian(polySet, state) {
 
         const
-            bellDistribs = [],
-            bellOffsets = [],
-
-            computeBell = function (range, spread, resolution) {
-
-                let
-                    accumulator,
-                    step = 1 / resolution,
-                    dist = [],
-                    off = [],
-                    index = 0;
-
-                for (let x = -range - 1; x <= range + 1; x += 1) {
-                    off[x] = index;
-                    accumulator = step + Math.exp(-x * x / 2 / spread / spread);
-                    while (accumulator >= step) {
-                        if (x !== 0) {
-                            dist[index] = x;
-                            index += 1;
-                        }
-                        accumulator -= step;
-                    }
-                }
-                bellOffsets[range] = off;
-                bellDistribs[range] = dist;
-
-                return dist;
-            },
-
-            bellRandom = function (range, center) {
-
-                let
-                    off,
-                    dist = bellDistribs[range];
-
-                center = Math.round(center);
-
-                if (!dist) {
-                    dist = computeBell(range, range / 6, 40);
-                }
-                off = bellOffsets[range];
-
-                return Math.round(center + dist[off[-center] + rng.getInt(off[range - center + 1] - off[-center])]);
-            },
 
             randPolyId = rng.getInt(polySet.length - 1),
             roulette = rng.getFloat(2.0); // equally likely to change colour/alpha as shape
@@ -89,24 +45,24 @@ export default class Mutate {
 
             if (this.palette === 'greyscale') {
 
-                const newC = bellRandom(255, polySet[randPolyId].colour.r);
+                const newC = rng.bell(255, polySet[randPolyId].colour.r);
                 polySet[randPolyId].colour.r = newC;
                 polySet[randPolyId].colour.g = newC;
                 polySet[randPolyId].colour.b = newC;
                 if (roulette < 1.0) { // alpha
-                    polySet[randPolyId].colour.a = Math.round(3.9 * bellRandom(255, Math.floor(polySet[randPolyId].colour.a * 255))) / 1000;
+                    polySet[randPolyId].colour.a = Math.round(3.9 * rng.bell(255, Math.floor(polySet[randPolyId].colour.a * 255))) / 1000;
                 }
 
             } else {
 
                 if (roulette < 0.25) { // red
-                    polySet[randPolyId].colour.r = bellRandom(255, polySet[randPolyId].colour.r);
+                    polySet[randPolyId].colour.r = rng.bell(255, polySet[randPolyId].colour.r);
                 } else if (roulette < 0.5) { // green
-                    polySet[randPolyId].colour.g = bellRandom(255, polySet[randPolyId].colour.g);
+                    polySet[randPolyId].colour.g = rng.bell(255, polySet[randPolyId].colour.g);
                 } else if (roulette < 0.75) { // blue
-                    polySet[randPolyId].colour.b = bellRandom(255, polySet[randPolyId].colour.b);
+                    polySet[randPolyId].colour.b = rng.bell(255, polySet[randPolyId].colour.b);
                 } else if (roulette < 1.0) { // alpha
-                    polySet[randPolyId].colour.a = Math.round(3.9 * bellRandom(255, Math.floor(polySet[randPolyId].colour.a * 255))) / 1000;
+                    polySet[randPolyId].colour.a = Math.round(3.9 * rng.bell(255, Math.floor(polySet[randPolyId].colour.a * 255))) / 1000;
                 }
 
             }
@@ -118,7 +74,7 @@ export default class Mutate {
                 randPolyCoord = rng.getInt(polySet[randPolyId].coords.length - 1), //could be x or y.
                 boundingBox = Poly.getBoundingBox(this.width, this.height, maxDim, polySet[randPolyId], [randPolyCoord]);
 
-            let newVal = polySet[randPolyId].coords[randPolyCoord] + Math.round(maxDim / 2) - bellRandom(maxDim, maxDim / 2);
+            let newVal = polySet[randPolyId].coords[randPolyCoord] + Math.round(maxDim / 2) - rng.bell(maxDim, maxDim / 2);
 
             if (randPolyCoord % 2 === 0) { // even, so x-coordinate
                 newVal = clamp(newVal, boundingBox.minX, boundingBox.maxX);

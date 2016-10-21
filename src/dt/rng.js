@@ -101,6 +101,57 @@ export function el(a) {
     return a[random.uint32() % (a.length)];
 }
 
+function _getBell(range, spread, resolution) {
+
+    let
+        accumulator,
+        step = 1 / resolution,
+        dist = [],
+        off = [],
+        index = 0;
+
+    for (let x = -range - 1; x <= range + 1; x += 1) {
+        off[x] = index;
+        accumulator = step + Math.exp(-x * x / 2 / spread / spread);
+        while (accumulator >= step) {
+            if (x !== 0) {
+                dist[index] = x;
+                index += 1;
+            }
+            accumulator -= step;
+        }
+    }
+
+    return [dist, off];
+}
+
+export const bell = (function(range, center) {
+
+    const
+        bellDistributions = [],
+        bellOffsets = [];
+
+    return function () {
+
+        let
+            off,
+            dist = bellDistributions[range];
+
+        center = Math.round(center);
+
+        if (!dist) {
+            [dist, off] = _getBell(range, range / 6, 40);
+            bellOffsets[range] = off;
+            bellDistributions[range] = dist;
+        }
+        off = bellOffsets[range];
+
+        return Math.round(center + dist[off[-center] + getInt(off[range - center + 1] - off[-center])]);
+
+    }
+
+}());
+
 export function calls() {
     return random.calls();
 }
