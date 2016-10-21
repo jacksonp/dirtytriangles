@@ -1,7 +1,9 @@
 require('rc-slider/assets/index.css');
+require('./index.css');
 
 import React, {PropTypes} from 'react';
 import Rcslider from 'rc-slider'
+import About from '../About/';
 
 const MIN_POLYGONS = 10;
 const MAX_POLYGONS = 500;
@@ -18,25 +20,19 @@ const Evolve = ({
     maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, secondsRun, numSteps, numPolygons,
     onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange
 }) => (
-    <div>
-        <h3>Start a New Image</h3>
-        <p>
-            Select an image
-            <input type="file" accept="image/*" onChange={onInputImageChange}/>
-        </p>
-
-        <div>
-            <img src={'/img/play-' + evolutionState + '.png'} alt="play" onClick={onPlay}/>
-            <img src={'/img/pause-' + evolutionState + '.png'} alt="pause" onClick={onPause}/>
+    <div id="dt-dash">
+        <div className="left-col">
+            <About/>
         </div>
-        <div>
+        <div className="canvasContainer">
             { inputImage ? <canvas id="canvas-display" width={canvasWidth} height={canvasHeight}/> : null }
         </div>
-        <div>
-            <h2>Stats</h2>
-            Steps/sec: {secondsRun ? Math.round(numSteps / secondsRun) : 0}<br/>
-            Polygons: {numPolygons}
-            <h2>Configuration</h2>
+        <div className="right-col">
+            <h2>Controls</h2>
+            <div>
+                <span className={'play ' + evolutionState} onClick={onPlay}>▶️</span> <span
+                className={'pause ' + evolutionState} onClick={onPause}>⏸</span>
+            </div>
             <p>Max Polygon Count</p>
             <Rcslider defaultValue={maxPolygons} step={10} min={MIN_POLYGONS} max={MAX_POLYGONS}
                       onChange={onMaxPolygonsChange}/>
@@ -46,6 +42,13 @@ const Evolve = ({
             <p>Polygon Size %</p>
             <Rcslider range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={MIN_POLYGON_SIZE}
                       max={MAX_POLYGON_SIZE} onChange={onPolygonSizeChange}/>
+            <p>
+                <label className="input-target-file">
+                    Set target image <input type="file" accept="image/*" onChange={onInputImageChange}/>
+                </label>
+            </p>
+            Steps/sec: {secondsRun ? Math.round(numSteps / secondsRun) : 0}<br/>
+            Polygons: {numPolygons}
         </div>
     </div>
 );

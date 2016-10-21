@@ -1,7 +1,9 @@
+require('./index.css');
+
 import React from 'react'
 
 const Header = () => (
-    <header>
+    <header id="dt-header">
         <a href="/">
             <h1>
                 <img src="/img/logo.png" alt="Dirty Triangles"/>

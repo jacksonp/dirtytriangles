@@ -1,0 +1,44 @@
+#dt-dash {
+    display: flex;
+}
+
+#dt-dash .input-target-file {
+    cursor: pointer;
+    color: #0ba6ec;
+}
+
+#dt-dash .input-target-file input {
+    display: none;
+}
+
+#dt-dash .canvasContainer {
+    text-align: center;
+    flex: 1;
+}
+
+#dt-dash .left-col, #dt-dash .right-col {
+    flex: 0 0 20em;
+}
+
+#dt-dash .pause, #dt-dash .play {
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+#dt-dash .pause {
+    font-size: 40px;
+    margin-top: -13px;
+}
+
+#dt-dash .pause.EVOLUTION_PAUSE {
+    color: #45bff6;
+}
+
+#dt-dash .play {
+    font-size: 20px;
+}
+
+#dt-dash .play.EVOLUTION_GO {
+    color: #45bff6;
+}

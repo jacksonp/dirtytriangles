@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import {setInputImage, evolutionChangeState, changeMaxPolygons, changeNumVertices, changePolygonSize} from '../actions'
-import Evolve from '../components/Evolve'
+import Evolve from '../components/Evolve/'
 
 const mapStateToProps = (state) => {
     return {
