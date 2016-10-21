@@ -17,8 +17,6 @@ export function eCreate(state) {
         state.stepsBeforeHeuristics, 1, ctxDisplay
     );
 
-    evolver.iniRandomPolySet(state);
-
     totMillis = 0;
 
 }

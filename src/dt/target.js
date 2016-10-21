@@ -95,10 +95,6 @@ export class DeltaE76Target extends Target {
         return this.imgWidth * this.imgHeight * 100;
     }
 
-    normalize(fitness) {
-        return Math.pow(1 - fitness / this.getMinFitness(), 16);
-    }
-
 
     // https://github.com/Qix-/color-convert/blob/master/conversions.js
     static rgb2xyz(rgb) {
@@ -214,10 +210,6 @@ export class SumSquaresTarget extends Target {
         return this.imgWidth * this.imgHeight * 3 * 255 * 255;
     }
 
-    normalize(fitness) {
-        return Math.pow(1 - fitness / this.getMinFitness(), 16);
-    }
-
 }
 
 export class GreyscaleTarget extends Target {
@@ -278,10 +270,6 @@ export class GreyscaleTarget extends Target {
 
     getMinFitness() {
         return this.imgWidth * this.imgHeight * 255 * 255;
-    }
-
-    normalize(fitness) {
-        return Math.pow(1 - fitness / this.getMinFitness(), 16);
     }
 
 }

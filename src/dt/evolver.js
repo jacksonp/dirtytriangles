@@ -66,6 +66,9 @@ export default class Evolver {
             this.target = new SumSquaresTarget(this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.ctxWorking);
         }
 
+        this.polySetWorking = [];
+        this.polySetBest = [];
+
         // set both to min fitness initially:
         this.fitnessBest = this.fitnessWorking = this.target.getMinFitness();
 
@@ -149,8 +152,6 @@ export default class Evolver {
         const canBreak = Poly.canBreakUpPoly(this.polySetWorking[this.breakUpPolyIndex]);
 
         if (canBreak !== false) {
-            canBreak.polyA.colour = Poly.cloneColour(this.polySetWorking[this.breakUpPolyIndex].colour);
-            canBreak.polyB.colour = Poly.cloneColour(this.polySetWorking[this.breakUpPolyIndex].colour);
             this.polySetWorking.splice(this.breakUpPolyIndex, 1, canBreak.polyA, canBreak.polyB);
             this.polySetBest.splice(this.breakUpPolyIndex, 1, Poly.clone(canBreak.polyA), Poly.clone(canBreak.polyB));
 
@@ -175,7 +176,7 @@ export default class Evolver {
         this.polySetWorking.push(poly);
         const newFitness = this.calcFitness(this.ctxWorking, this.polySetWorking);
         if (newFitness < this.fitnessBest) {
-            this.polySetBest.push(poly);
+            this.polySetBest.push(Poly.clone(poly));
             this.fitnessBest = newFitness;
         } else {
             this.polySetWorking.pop();
@@ -234,7 +235,9 @@ export default class Evolver {
             // need to update this.fitnessBest regardless, possible it got worse
             this.fitnessBest = this.fitnessWorking;
 
-            this.polySetBest = PolySet.clone(this.polySetWorking);
+            // this.polySetBest = PolySet.clone(this.polySetWorking);
+            this.polySetBest[mutateRes.poly] = Poly.clone(this.polySetWorking[mutateRes.poly]);
+
             // PolySet.scale(this.polySetBest, this.scale);
             //polySetRenderQueue.push(PolySet.clone(this.polySetBest))wdrawPolySet(this.ctxBest, set, w, h);
 
@@ -250,27 +253,12 @@ export default class Evolver {
 
     }
 
-    iniRandomPolySet(state) {
-        // this.polySetWorking = PolySet.create(this.iniPolygons, this.imgWidth, this.imgHeight, state.minVertices, this.maxDim, 'colourIni', this.palette);
-        // this.polySetBest = PolySet.clone(this.polySetWorking);
-        this.polySetWorking = [];
-        this.polySetBest = [];
-    }
-
     set polySet(polySet) {
-        this.polySetBest = polySet;
-        this.polySetWorking = polySet;
+        this.polySetBest = PolySet.clone(polySet);
+        this.polySetWorking = PolySet.clone(polySet);
         const newFitness = this.calcFitness(this.ctxWorking, this.polySetWorking);
         this.fitnessBest = newFitness;
         this.fitnessWorking = newFitness;
-    }
-
-    get fitnessBestNormalized() {
-        return this.target.normalize(this.fitnessBest);
-    }
-
-    get perfection() {
-        return (this.fitnessBestNormalized * 100).toFixed(2);
     }
 
 }

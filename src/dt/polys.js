@@ -181,8 +181,14 @@ export class Poly {
                     poly2Coords.push(intersection.x, intersection.y);
 
                     return {
-                        polyA: {coords: poly1Coords},
-                        polyB: {coords: poly2Coords}
+                        polyA: {
+                            coords: poly1Coords,
+                            colour: Poly.cloneColour(poly.colour)
+                        },
+                        polyB: {
+                            coords: poly2Coords,
+                            colour: Poly.cloneColour(poly.colour)
+                        }
                     };
 
                 }
