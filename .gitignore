@@ -2,3 +2,4 @@ node_modules/
 /.idea/
 /dist/bundle.*.js
 dist/index.html
+dist/google*.html

@@ -3,3 +3,8 @@
     min-height: 100vh;
     flex-direction: column;
 }
+
+#dt-app a {
+    text-decoration: none;
+    color: #0984bb;
+}

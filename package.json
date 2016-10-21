@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Evolve images from random polygons",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacksonp/dirtytriangles"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/webpack/bin/webpack.js",
