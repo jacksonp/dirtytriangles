@@ -1,7 +1,9 @@
 import * as rng from './rng'
 import {Poly, PolySet} from './polys'
 import {drawPolySet} from './render'
-import {GreyscaleTarget, DeltaE76Target, SumSquaresTarget} from './target'
+import GreyscaleTarget from './target/greyscale'
+import SumSquaresTarget from './target/sumSquares'
+// import DeltaE76Target from './target/deltaE76'
 import Mutate from './mutate'
 
 export default class Evolver {
