@@ -18,6 +18,7 @@ export function eCreate(state) {
     );
 
     totMillis = 0;
+    startMillis = null;
 
 }
 

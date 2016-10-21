@@ -1,10 +1,15 @@
 #dt-dash {
     display: flex;
+    flex: 1;
+    justify-items: center;
 }
 
 #dt-dash .input-target-file {
+    display: inline-block;
+    margin-top: 0.5em;
     cursor: pointer;
-    color: #0ba6ec;
+    color: #45bff6;
+    font-weight: bold;
 }
 
 #dt-dash .input-target-file input {
@@ -17,7 +22,12 @@
 }
 
 #dt-dash .left-col, #dt-dash .right-col {
-    flex: 0 0 20em;
+    flex: 0 1 22em;
+    padding: 0 1em;
+}
+
+#dt-dash .left-col h2, #dt-dash .right-col h2 {
+    margin-top: 0;
 }
 
 #dt-dash .pause, #dt-dash .play {
@@ -28,7 +38,7 @@
 
 #dt-dash .pause {
     font-size: 40px;
-    margin-top: -13px;
+    margin-top: -5px;
 }
 
 #dt-dash .pause.EVOLUTION_PAUSE {
@@ -41,4 +51,8 @@
 
 #dt-dash .play.EVOLUTION_GO {
     color: #45bff6;
+}
+
+.stats td.num {
+    text-align: right;
 }

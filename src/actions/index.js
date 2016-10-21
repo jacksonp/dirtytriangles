@@ -8,7 +8,7 @@ import {
 } from './types'
 import {eCreate, eStep, eDraw, ePause} from '../dt/run'
 
-const STEPS_PER_INTERVAL = 10; // 100
+const STEPS_PER_INTERVAL = 20; // 100
 
 let evolveIntervalId = null;
 

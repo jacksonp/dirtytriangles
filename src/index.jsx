@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk';
 import dtApp from './reducers/evolve'
-import App from './components/App';
+import App from './components/App/index';
 import {setImageSrc} from './actions'
 
 const ReactGA = require('react-ga');

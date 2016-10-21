@@ -11,7 +11,7 @@ const MAX_POLYGONS = 500;
 const MIN_VERTICES = 3;
 const MAX_VERTICES = 15;
 
-const MIN_POLYGON_SIZE = 5;
+const MIN_POLYGON_SIZE = 1;
 const MAX_POLYGON_SIZE = 100;
 
 const Evolve = ({
@@ -44,11 +44,21 @@ const Evolve = ({
                       max={MAX_POLYGON_SIZE} onChange={onPolygonSizeChange}/>
             <p>
                 <label className="input-target-file">
-                    Set target image <input type="file" accept="image/*" onChange={onInputImageChange}/>
+                    Set Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
                 </label>
             </p>
-            Steps/sec: {secondsRun ? Math.round(numSteps / secondsRun) : 0}<br/>
-            Polygons: {numPolygons}
+            <table className="stats">
+                <tbody>
+                <tr>
+                    <td>Steps/sec</td>
+                    <td className="num">{secondsRun ? Math.round(numSteps / secondsRun) : 0}</td>
+                </tr>
+                <tr>
+                    <td>Polygons</td>
+                    <td className="num">{numPolygons}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 );

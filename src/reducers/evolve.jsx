@@ -17,7 +17,7 @@ const initialState = {
     maxPolygons: 100,
     minVertices: 3,
     maxVertices: 5,
-    minPolygonSize: 5,
+    minPolygonSize: 1,
     maxPolygonSize: 20,
     mutateFn: 'randomFn',
     stepsBeforeHeuristics: 20000,

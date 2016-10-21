@@ -1,0 +1,12 @@
+#dt-footer {
+    background-color: #0a8fcb;
+    text-align: center;
+    padding: 1em;
+    color: #fff;
+}
+
+#dt-footer a {
+    margin: 0 2em;
+    color: #fff;
+    text-decoration: none;
+}
