@@ -20,7 +20,10 @@ const initialState = {
     minPolygonSize: 5,
     maxPolygonSize: 20,
     mutateFn: 'randomFn',
-    stepsBeforeHeuristics: 20000
+    stepsBeforeHeuristics: 20000,
+    secondsRun: 0,
+    numSteps: 0,
+    numPolygons: 0
 };
 
 const evolve = (state = initialState, action) => {
@@ -66,7 +69,9 @@ const evolve = (state = initialState, action) => {
             });
         case EVOLUTION_REDRAW:
             return Object.assign({}, state, {
-                stepsPerSec: action.stepsPerSec
+                secondsRun: action.secondsRun,
+                numSteps: action.numSteps,
+                numPolygons: action.numPolygons
             });
         default:
             return state

@@ -15,7 +15,7 @@ const MAX_POLYGON_SIZE = 100;
 const Evolve = ({
     inputImage,
     canvasWidth, canvasHeight, evolutionState,
-    maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, stepsPerSec,
+    maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, secondsRun, numSteps, numPolygons,
     onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange
 }) => (
     <div>
@@ -34,7 +34,8 @@ const Evolve = ({
         </div>
         <div>
             <h2>Stats</h2>
-            Steps/sec: {stepsPerSec}
+            Steps/sec: {secondsRun ? Math.round(numSteps / secondsRun) : 0}<br/>
+            Polygons: {numPolygons}
             <h2>Configuration</h2>
             <p>Max Polygon Count</p>
             <Rcslider defaultValue={maxPolygons} step={10} min={MIN_POLYGONS} max={MAX_POLYGONS}
@@ -54,7 +55,9 @@ Evolve.propTypes = {
     canvasWidth: PropTypes.number,
     canvasHeight: PropTypes.number,
     evolutionState: PropTypes.string.isRequired,
-    stepsPerSec: PropTypes.number,
+    secondsRun: PropTypes.number,
+    numSteps: PropTypes.number,
+    numPolygons: PropTypes.number,
     onInputImageChange: PropTypes.func.isRequired,
     onPlay: PropTypes.func.isRequired,
     onPause: PropTypes.func.isRequired,

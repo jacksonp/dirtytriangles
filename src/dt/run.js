@@ -30,8 +30,11 @@ export function eStep(state) {
 
 export function eDraw() {
     drawPolySet(ctxDisplay, evolver.polySetBest, evolver.imgWidth, evolver.imgHeight, evolver.scale);
-    // Return steps/sec
-    return Math.round(1000 * evolver.stats.numSteps / (totMillis + getTimeStamp() - startMillis));
+    return {
+        secondsRun: (totMillis + getTimeStamp() - startMillis) / 1000,
+        numSteps: evolver.stats.numSteps,
+        numPolygons: evolver.polySetBest.length
+    }
 }
 
 export function ePause() {

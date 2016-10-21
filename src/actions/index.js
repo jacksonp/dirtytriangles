@@ -53,10 +53,12 @@ export function evolutionSetState(evolutionState) {
     }
 }
 
-export function evolutionRedraw(stepsPerSec) {
+export function evolutionRedraw({secondsRun, numSteps, numPolygons}) {
     return {
         type: EVOLUTION_REDRAW,
-        stepsPerSec: stepsPerSec
+        secondsRun: secondsRun,
+        numSteps: numSteps,
+        numPolygons: numPolygons
     }
 }
 

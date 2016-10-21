@@ -13,7 +13,9 @@ const mapStateToProps = (state) => {
         maxVertices: state.maxVertices,
         minPolygonSize: state.minPolygonSize,
         maxPolygonSize: state.maxPolygonSize,
-        stepsPerSec: state.stepsPerSec
+        secondsRun: state.secondsRun,
+        numSteps: state.numSteps,
+        numPolygons: state.numPolygons
     }
 };
 
