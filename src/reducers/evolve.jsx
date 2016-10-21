@@ -16,7 +16,7 @@ const initialState = {
     evolutionState: 'EVOLUTION_PAUSE',
     maxPolygons: 100,
     minVertices: 3,
-    maxVertices: 4,
+    maxVertices: 5,
     minPolygonSize: 5,
     maxPolygonSize: 20,
     mutateFn: 'randomFn',

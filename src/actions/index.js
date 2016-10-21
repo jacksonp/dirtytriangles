@@ -19,31 +19,36 @@ export function loadInputImage(inputImage) {
     }
 }
 
-export function setInputImage(e) {
-
+export function setImageSrc(src) {
     return function (dispatch, getState) {
         // could dispatch something to say file load started.
 
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            const inputImage = new Image();
-            inputImage.src = event.target.result;
-            inputImage.onload = function () {
+        const inputImage = new Image();
+        inputImage.src = src;
+        inputImage.onload = function () {
 
-                if (inputImage.width === 0) {
-                    alert('Image could not be loaded.');
-                } else {
-                    dispatch(loadInputImage(inputImage));
-                    eCreate(getState());
-                    dispatch(evolutionChangeState('EVOLUTION_GO'));
-                }
-
+            if (inputImage.width === 0) {
+                alert('Image could not be loaded.');
+            } else {
+                dispatch(loadInputImage(inputImage));
+                eCreate(getState());
+                dispatch(evolutionChangeState('EVOLUTION_GO'));
             }
-        };
-        reader.readAsDataURL(e.target.files[0]);
+
+        }
 
     }
+}
 
+export function setInputImage(e) {
+    return function (dispatch) {
+        // could dispatch something to say file load started.
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            dispatch(setImageSrc(event.target.result));
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    }
 }
 
 export function evolutionSetState(evolutionState) {
