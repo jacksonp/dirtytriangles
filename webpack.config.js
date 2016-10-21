@@ -18,7 +18,8 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'style!css!'
-            }]
+            }
+        ]
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
@@ -26,13 +27,24 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/',
-        filename: 'bundle.js'
+        filename: 'bundle.[hash].js'
     },
     devServer: {
         contentBase: './dist',
         hot: true
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        function () {
+            this.plugin('done', function (stats) {
+                const
+                    fs = require('fs'),
+                    bundleName = stats.toJson().assetsByChunkName.main;
+                let htmlContents = fs.readFileSync(path.join(__dirname, 'src', 'index.html'), 'utf8');
+                console.log(htmlContents);
+                htmlContents = htmlContents.replace('__JS_BUNDLE_NAME__', bundleName);
+                fs.writeFileSync(path.join(__dirname, 'dist', 'index.html'), htmlContents);
+            });
+        }
     ]
 };
