@@ -4,8 +4,13 @@
     justify-items: center;
 }
 
+#dt-dash .play-pause-get {
+    display: flex;
+    align-items: center;
+}
+
 #dt-dash .download-image {
-    float: right;
+    margin-left: auto;
 }
 
 #dt-dash .download-image a, #dt-dash .input-target-file {
@@ -31,7 +36,7 @@
 }
 
 #dt-dash .left-col, #dt-dash .right-col {
-    flex: 0 1 22em;
+    flex: 0 1 27em;
     padding: 0 1em;
 }
 
@@ -47,27 +52,9 @@
     margin-top: 0;
 }
 
-#dt-dash .pause, #dt-dash .play {
-    display: inline-block;
-    vertical-align: top;
+#dt-dash svg {
+    margin-right: 20px;
     cursor: pointer;
-}
-
-#dt-dash .pause {
-    font-size: 35px;
-}
-
-#dt-dash .pause.EVOLUTION_PAUSE {
-    color: #45bff6;
-}
-
-#dt-dash .play {
-    font-size: 20px;
-    margin-top: 3px;
-}
-
-#dt-dash .play.EVOLUTION_GO {
-    color: #45bff6;
 }
 
 #dt-dash .stats {

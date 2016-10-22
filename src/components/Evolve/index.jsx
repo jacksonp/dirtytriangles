@@ -41,10 +41,20 @@ const Evolve = ({
         </div>
         <div className="right-col">
             <h2>Controls</h2>
-            <div>
-                <span className="download-image"><a className="get-png" download="dirtytriangles.png" onClick={getPNG}>PNG</a> <a className="get-svg" download="dirtytriangles.svg" onClick={getSVG}>SVG</a></span>
-                <span className={'play ' + evolutionState} onClick={onPlay}>▶️</span> <span
-                className={'pause ' + evolutionState} onClick={onPause}>⏸</span>
+            <div className="play-pause-get">
+
+                <svg width="20" height="20" onClick={onPlay}>
+                    <polygon points="0,0 0,20 20,10" fill={evolutionState === 'EVOLUTION_GO' ? '#45bff6' : 'black'}/>
+                </svg>
+                <svg width="20" height="20" onClick={onPause}>
+                    <path d="M0,0 L0,20 L5,20 L5,0 L0,0 M10,0 L10,20 L15,20 L15,0, L10,0"
+                          fill={evolutionState === 'EVOLUTION_PAUSE' ? '#45bff6' : 'black'}/>
+                </svg>
+                <span className="download-image">
+                    <a className="get-png" title="Save this image as a png file." download="dirtytriangles.png"
+                       onClick={getPNG}>PNG</a> <a clalossName="get-svg" title="Save this image as an svg file."
+                                                   download="dirtytriangles.svg" onClick={getSVG}>SVG</a>
+                </span>
             </div>
             <p>Max Polygon Count</p>
             <Rcslider defaultValue={maxPolygons} step={10} min={MIN_POLYGONS} max={MAX_POLYGONS}
