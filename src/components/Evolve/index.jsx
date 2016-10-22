@@ -4,6 +4,8 @@ require('./index.css');
 import React, {PropTypes} from 'react';
 import Rcslider from 'rc-slider'
 import About from '../About/';
+import {eSVG} from '../../dt/run'
+import base64 from 'base-64'
 
 const MIN_POLYGONS = 10;
 const MAX_POLYGONS = 500;
@@ -16,15 +18,16 @@ const MAX_POLYGON_SIZE = 100;
 
 export const MAX_SCALE = 4;
 
-function scaleFormatter(value) {
-    return '1/' + Math.pow(2, (MAX_SCALE - value) * 2);
+function getSVG(e) {
+    e.target.href = 'data:image/svg+xml;base64,\n' + base64.encode(eSVG());
 }
+
 
 const Evolve = ({
     inputImage,
     canvasWidth, canvasHeight, scale, evolutionState,
     maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, secondsRun, numSteps, numPolygons,
-    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange
+    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange, onGetSVG
 }) => (
     <div id="dt-dash">
         <div className="left-col">
@@ -36,6 +39,7 @@ const Evolve = ({
         <div className="right-col">
             <h2>Controls</h2>
             <div>
+                <a className="get-svg" download="dirtytriangles.svg" onClick={getSVG}>SVG</a>
                 <span className={'play ' + evolutionState} onClick={onPlay}>▶️</span> <span
                 className={'pause ' + evolutionState} onClick={onPause}>⏸</span>
             </div>
@@ -51,11 +55,6 @@ const Evolve = ({
             <p>Target Scale</p>
             <Rcslider defaultValue={scale} min={0} max={MAX_SCALE} onChange={onScaleChange} included={false}
                       marks={{0: '1/256', 1: '1/64', 2: '1/16', 3: '1/4', 4: '1/1'}}/>
-            <p>
-                <label className="input-target-file">
-                    Set Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
-                </label>
-            </p>
             <table className="stats">
                 <tbody>
                 <tr>
@@ -68,6 +67,11 @@ const Evolve = ({
                 </tr>
                 </tbody>
             </table>
+            <p>
+                <label className="input-target-file">
+                    New Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
+                </label>
+            </p>
         </div>
     </div>
 );
@@ -86,7 +90,7 @@ Evolve.propTypes = {
     onMaxPolygonsChange: PropTypes.func.isRequired,
     onNumVerticesChange: PropTypes.func.isRequired,
     onPolygonSizeChange: PropTypes.func.isRequired,
-    onScaleChange: PropTypes.func.isRequired,
+    onScaleChange: PropTypes.func.isRequired
 };
 
 export default Evolve;

@@ -4,14 +4,21 @@
     justify-items: center;
 }
 
-#dt-dash .input-target-file {
+#dt-dash .get-svg {
+    float: right;
+}
+
+#dt-dash .get-svg, #dt-dash .input-target-file {
     display: inline-block;
-    margin-top: 1.5em;
     cursor: pointer;
     color: #45bff6;
     font-weight: bold;
     padding: .5em;
     border: 1px solid #45bff6;
+}
+
+#dt-dash .input-target-file {
+    margin-top: .5em;
 }
 
 #dt-dash .input-target-file input {
@@ -32,6 +39,10 @@
     padding-right: 3em;
 }
 
+#dt-dash .right-col p {
+    margin: 1.6em 0 0.4em 0;
+}
+
 #dt-dash .left-col h2, #dt-dash .right-col h2 {
     margin-top: 0;
 }
@@ -44,7 +55,6 @@
 
 #dt-dash .pause {
     font-size: 35px;
-    margin-top: -3px;
 }
 
 #dt-dash .pause.EVOLUTION_PAUSE {
@@ -53,12 +63,17 @@
 
 #dt-dash .play {
     font-size: 20px;
+    margin-top: 3px;
 }
 
 #dt-dash .play.EVOLUTION_GO {
     color: #45bff6;
 }
 
-.stats td.num {
+#dt-dash .stats {
+    margin-top: 2.5em;
+}
+
+#dt-dash .stats td.num {
     text-align: right;
 }

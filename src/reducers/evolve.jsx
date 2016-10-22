@@ -25,7 +25,7 @@ const initialState = {
     secondsRun: 0,
     numSteps: 0,
     numPolygons: 0,
-    scale: 1 // i.e. 1/64
+    scale: 2 // i.e. 1/16
 };
 
 const evolve = (state = initialState, action) => {

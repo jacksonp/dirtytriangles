@@ -49,6 +49,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onScaleChange: (scale) => {
             dispatch(changeScale(scale))
+        },
+        getSVG: (scale) => {
+            dispatch(changeScale(scale))
         }
     }
 };
