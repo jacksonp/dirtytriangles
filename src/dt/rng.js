@@ -125,13 +125,13 @@ function _getBell(range, spread, resolution) {
     return [dist, off];
 }
 
-export const bell = (function(range, center) {
+export const bell = (function () {
 
     const
         bellDistributions = [],
         bellOffsets = [];
 
-    return function () {
+    return function (range, center) {
 
         let
             off,
