@@ -82,10 +82,8 @@ export class Poly {
     }
 
     static scale(poly, scale) {
-        if (scale > 1) {
-            for (let i = 0; i < poly.coords.length; i += 1) {
-                poly.coords[i] *= scale;
-            }
+        for (let i = 0; i < poly.coords.length; i += 1) {
+            poly.coords[i] = Math.round(poly.coords[i] * scale);
         }
     }
 

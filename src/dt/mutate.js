@@ -70,7 +70,7 @@ export default class Mutate {
         } else {   // mutate coords
 
             const
-                maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, state.canvasWidth, state.canvasHeight),
+                maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, this.width, this.height),
                 randPolyCoord = rng.getInt(polySet[randPolyId].coords.length - 1), //could be x or y.
                 boundingBox = Poly.getBoundingBox(this.width, this.height, maxDim, polySet[randPolyId], [randPolyCoord]);
 
@@ -136,7 +136,7 @@ export default class Mutate {
         } else { // mutate coords
             randPolyCoord = rng.getInt(polySet[randPolyId].coords.length - 1); //could be x or y.
             const
-                maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, state.canvasWidth, state.canvasHeight),
+                maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, this.width, this.height),
                 boundingBox = Poly.getBoundingBox(this.width, this.height, maxDim, polySet[randPolyId], [randPolyCoord]);
             if (randPolyCoord % 2 === 0) { // even, so x-coordinate
                 newVal = boundingBox.minX + rng.getInt(maxDim);
@@ -178,7 +178,7 @@ export default class Mutate {
             polySet[randPolyId].colour.a = rng.getInt(1000) / 1000;
         }
 
-        const maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, state.canvasWidth, state.canvasHeight);
+        const maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, this.width, this.height);
 
         if (randPolyCoord % 2 === 0) { // even, so randPolyCoord is x-coordinate
             const boundingBox = Poly.getBoundingBox(this.width, this.height, maxDim, polySet[randPolyId], [randPolyCoord, randPolyCoord + 1]);
@@ -328,7 +328,7 @@ export default class Mutate {
         midY = Math.round((poly.coords[randCoordIx + 1] + poly.coords[randCoordJx + 1]) / 2);
 
         const
-            maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, state.canvasWidth, state.canvasHeight),
+            maxDim = Poly.makeDimension(state.minPolygonSize, state.maxPolygonSize, this.width, this.height),
             boundingBox = Poly.getBoundingBox(this.imgWidth, this.imgHeight, maxDim, polySet[randPolyId]);
 
         if (roulette < 0.5) {

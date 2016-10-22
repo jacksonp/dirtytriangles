@@ -9,9 +9,11 @@ import Mutate from './mutate'
 export default class Evolver {
 
     constructor(inputImage, imgWidthNoMargin, imgHeightNoMargin, margin,
-                maxSizePerc,
                 palette, breakUpPolys, removeAUselessVertex, removeAUselessPoly,
                 stepsBeforeHeuristics, scale, ctxDisplay) {
+
+        this.inputImage = inputImage;
+        this.stepsBeforeHeuristics = stepsBeforeHeuristics;
 
 
         this.stats = {
@@ -35,52 +37,79 @@ export default class Evolver {
             }
         };
 
-        this.imgWidthNoMargin = imgWidthNoMargin;
-        this.imgHeightNoMargin = imgHeightNoMargin;
-        this.margin = margin;
         this.palette = palette;
         this.breakUpPolys = breakUpPolys;
         this.removeAUselessVertex = removeAUselessVertex;
         this.removeAUselessPoly = removeAUselessPoly;
         this.ctxDisplay = ctxDisplay;
-        this.scale = scale;
-
-        this.imgWidth = this.imgWidthNoMargin + this.margin + this.margin;
-        this.imgHeight = this.imgHeightNoMargin + this.margin + this.margin;
-
-        this.canvasWorking = document.createElement('canvas');
-        this.canvasWorking.setAttribute('width', this.imgWidth);
-        this.canvasWorking.setAttribute('height', this.imgHeight);
-        this.ctxWorking = this.canvasWorking.getContext('2d', {alpha: false});
-
-        const canvasWorking2 = document.createElement('canvas');
-        canvasWorking2.setAttribute('width', this.imgWidth);
-        canvasWorking2.setAttribute('height', this.imgHeight);
-        this.ctxWorking2 = canvasWorking2.getContext('2d', {alpha: false});
-
-        // this.canvasWorking is not visible, use it temporarily to establish our this.target:
-        // draw the image onto the canvas:
-        this.ctxWorking.drawImage(inputImage, this.margin, this.margin, this.imgWidthNoMargin, this.imgHeightNoMargin);
-        // set-up the fitness object for this this.target:
-        if (palette === 'greyscale') {
-            this.target = new GreyscaleTarget(this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.ctxWorking);
-        } else {
-            this.target = new SumSquaresTarget(this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.ctxWorking);
-        }
 
         this.polySetWorking = [];
         this.polySetBest = [];
 
-        // set both to min fitness initially:
-        this.fitnessBest = this.fitnessWorking = this.target.getMinFitness();
+        this.fitnessBest = this.fitnessWorking = Number.MAX_SAFE_INTEGER;
 
-        this.mutator = new Mutate(this.stats, this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, palette, breakUpPolys, removeAUselessVertex, stepsBeforeHeuristics);
+        this.scale = scale;
 
         // start with a random poly/vertex, not always the first
         this.uselessPolyIndex = rng.getUInt32();
         this.uselessVertexPolyIndex = rng.getUInt32();
         this.uselessVertexVertexIndex = rng.getUInt32();
         this.breakUpPolyIndex = rng.getUInt32();
+
+        this.setDimensions(imgWidthNoMargin, imgHeightNoMargin, margin);
+
+    }
+
+    setDimensions(imgWidthNoMargin, imgHeightNoMargin, margin) {
+
+        this.imgWidthNoMargin = imgWidthNoMargin;
+        this.imgHeightNoMargin = imgHeightNoMargin;
+
+        this.margin = margin;
+
+        this.imgWidth = this.imgWidthNoMargin + this.margin + this.margin;
+        this.imgHeight = this.imgHeightNoMargin + this.margin + this.margin;
+
+        this.canvasWorking = document.createElement('canvas');
+        this.canvasWorking2 = document.createElement('canvas');
+
+        this.canvasWorking.setAttribute('width', this.imgWidth);
+        this.canvasWorking.setAttribute('height', this.imgHeight);
+        this.ctxWorking = this.canvasWorking.getContext('2d', {alpha: false});
+
+        this.canvasWorking2.setAttribute('width', this.imgWidth);
+        this.canvasWorking2.setAttribute('height', this.imgHeight);
+        this.ctxWorking2 = this.canvasWorking2.getContext('2d', {alpha: false});
+
+        // this.canvasWorking is not visible, use it temporarily to establish our this.target:
+        // draw the image onto the canvas:
+        this.ctxWorking.drawImage(this.inputImage, this.margin, this.margin, this.imgWidthNoMargin, this.imgHeightNoMargin);
+        // set-up the fitness object for this this.target:
+        if (this.palette === 'greyscale') {
+            this.target = new GreyscaleTarget(this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.ctxWorking);
+        } else {
+            this.target = new SumSquaresTarget(this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.ctxWorking);
+        }
+
+        this.mutator = new Mutate(this.stats, this.imgWidthNoMargin, this.imgHeightNoMargin, this.margin, this.palette, this.breakUpPolys, this.removeAUselessVertex, this.stepsBeforeHeuristics);
+
+    }
+
+    updateScale(newScale) {
+
+        const scaleChange = this.scale / newScale;
+
+        this.scale = newScale;
+
+        this.setDimensions(this.imgWidthNoMargin * scaleChange, this.imgHeightNoMargin * scaleChange, 0);
+
+        PolySet.scale(this.polySetWorking, scaleChange);
+        PolySet.scale(this.polySetBest, scaleChange);
+
+        const newFitness = this.calcFitness(this.ctxWorking, this.polySetWorking);
+        this.fitnessBest = newFitness;
+        this.fitnessWorking = newFitness;
+
 
     }
 
@@ -253,14 +282,6 @@ export default class Evolver {
 
         return this.fitnessBest;
 
-    }
-
-    set polySet(polySet) {
-        this.polySetBest = PolySet.clone(polySet);
-        this.polySetWorking = PolySet.clone(polySet);
-        const newFitness = this.calcFitness(this.ctxWorking, this.polySetWorking);
-        this.fitnessBest = newFitness;
-        this.fitnessWorking = newFitness;
     }
 
 }

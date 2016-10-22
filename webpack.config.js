@@ -41,7 +41,6 @@ module.exports = {
                     fs = require('fs'),
                     bundleName = stats.toJson().assetsByChunkName.main;
                 let htmlContents = fs.readFileSync(path.join(__dirname, 'src', 'index.html'), 'utf8');
-                console.log(htmlContents);
                 htmlContents = htmlContents.replace('__JS_BUNDLE_NAME__', bundleName);
                 fs.writeFileSync(path.join(__dirname, 'dist', 'index.html'), htmlContents);
             });

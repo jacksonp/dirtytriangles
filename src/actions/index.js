@@ -4,11 +4,12 @@ import {
     CHANGE_MAX_POLYGONS,
     CHANGE_NUM_VERTICES,
     CHANGE_POLYGON_SIZE,
+    CHANGE_SCALE,
     EVOLUTION_REDRAW
 } from './types'
 import {eCreate, eStep, eDraw, ePause} from '../dt/run'
 
-const STEPS_PER_INTERVAL = 20; // 100
+const STEPS_PER_INTERVAL = 10; // 100
 
 let evolveIntervalId = null;
 
@@ -83,7 +84,7 @@ export function evolutionChangeState(evolutionState) {
                 if (!evolveIntervalId) {
                     const step = function () {
                         const state = getState();
-                        for (let i = 0; i < STEPS_PER_INTERVAL; i++) {
+                        for (let i = 0; i < STEPS_PER_INTERVAL * Math.pow(2, (4 - state.scale)); i++) {
                             if (eStep(state) === 0) { // Perfect fitness, say a blank canvas.
                                 evolutionChangeState('EVOLUTION_PAUSE');
                             }
@@ -123,5 +124,12 @@ export function changePolygonSize([minPolygonSize, maxPolygonSize]) {
         type: CHANGE_POLYGON_SIZE,
         minPolygonSize: minPolygonSize,
         maxPolygonSize: maxPolygonSize,
+    }
+}
+
+export function changeScale(scale) {
+    return {
+        type: CHANGE_SCALE,
+        scale: scale
     }
 }

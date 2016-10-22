@@ -14,11 +14,17 @@ const MAX_VERTICES = 15;
 const MIN_POLYGON_SIZE = 1;
 const MAX_POLYGON_SIZE = 100;
 
+export const MAX_SCALE = 4;
+
+function scaleFormatter(value) {
+    return '1/' + Math.pow(2, (MAX_SCALE - value) * 2);
+}
+
 const Evolve = ({
     inputImage,
-    canvasWidth, canvasHeight, evolutionState,
+    canvasWidth, canvasHeight, scale, evolutionState,
     maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, secondsRun, numSteps, numPolygons,
-    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange
+    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange
 }) => (
     <div id="dt-dash">
         <div className="left-col">
@@ -42,6 +48,9 @@ const Evolve = ({
             <p>Polygon Size %</p>
             <Rcslider range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={MIN_POLYGON_SIZE}
                       max={MAX_POLYGON_SIZE} onChange={onPolygonSizeChange}/>
+            <p>Target Scale</p>
+            <Rcslider defaultValue={scale} min={0} max={MAX_SCALE} onChange={onScaleChange} included={false}
+                      marks={{0: '1/256', 1: '1/64', 2: '1/16', 3: '1/4', 4: '1/1'}}/>
             <p>
                 <label className="input-target-file">
                     Set Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
@@ -77,6 +86,7 @@ Evolve.propTypes = {
     onMaxPolygonsChange: PropTypes.func.isRequired,
     onNumVerticesChange: PropTypes.func.isRequired,
     onPolygonSizeChange: PropTypes.func.isRequired,
+    onScaleChange: PropTypes.func.isRequired,
 };
 
 export default Evolve;

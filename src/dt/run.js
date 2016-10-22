@@ -7,25 +7,37 @@ let startMillis = null,
     ctxDisplay,
     evolver;
 
+function calculateScale(sliderScale) {
+    return Math.pow(2, (4 - sliderScale));
+}
+
 export function eCreate(state) {
 
     ctxDisplay = document.getElementById('canvas-display').getContext('2d', {alpha: false});
 
-    evolver = new Evolver(state.inputImage, state.canvasWidth, state.canvasHeight, 0,
-        10,
-        '24-bit', true, true, 0.75,
-        state.stepsBeforeHeuristics, 1, ctxDisplay
-    );
+    const scale = calculateScale(state.scale);
 
+    evolver = new Evolver(state.inputImage, state.canvasWidth / scale, state.canvasHeight / scale, 0,
+        '24-bit', true, true, 0.75,
+        state.stepsBeforeHeuristics, scale, ctxDisplay
+    );
     totMillis = 0;
     startMillis = null;
 
 }
 
 export function eStep(state) {
+
     if (startMillis === null) {
         startMillis = getTimeStamp();
     }
+
+    const scale = calculateScale(state.scale);
+
+    if (scale !== evolver.scale) {
+        evolver.updateScale(scale);
+    }
+
     return evolver.step(state);
 }
 

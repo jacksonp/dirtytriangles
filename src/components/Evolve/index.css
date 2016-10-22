@@ -6,10 +6,12 @@
 
 #dt-dash .input-target-file {
     display: inline-block;
-    margin-top: 0.5em;
+    margin-top: 1.5em;
     cursor: pointer;
     color: #45bff6;
     font-weight: bold;
+    padding: .5em;
+    border: 1px solid #45bff6;
 }
 
 #dt-dash .input-target-file input {
@@ -24,6 +26,10 @@
 #dt-dash .left-col, #dt-dash .right-col {
     flex: 0 1 22em;
     padding: 0 1em;
+}
+
+#dt-dash .right-col {
+    padding-right: 3em;
 }
 
 #dt-dash .left-col h2, #dt-dash .right-col h2 {

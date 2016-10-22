@@ -4,6 +4,7 @@ import {
     CHANGE_MAX_POLYGONS,
     CHANGE_NUM_VERTICES,
     CHANGE_POLYGON_SIZE,
+    CHANGE_SCALE,
     EVOLUTION_REDRAW
 } from '../actions/types'
 
@@ -18,12 +19,13 @@ const initialState = {
     minVertices: 3,
     maxVertices: 5,
     minPolygonSize: 1,
-    maxPolygonSize: 20,
+    maxPolygonSize: 15,
     mutateFn: 'randomFn',
     stepsBeforeHeuristics: 20000,
     secondsRun: 0,
     numSteps: 0,
-    numPolygons: 0
+    numPolygons: 0,
+    scale: 1 // i.e. 1/64
 };
 
 const evolve = (state = initialState, action) => {
@@ -66,6 +68,10 @@ const evolve = (state = initialState, action) => {
             return Object.assign({}, state, {
                 minPolygonSize: action.minPolygonSize,
                 maxPolygonSize: action.maxPolygonSize
+            });
+        case CHANGE_SCALE:
+            return Object.assign({}, state, {
+                scale: action.scale
             });
         case EVOLUTION_REDRAW:
             return Object.assign({}, state, {
