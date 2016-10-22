@@ -18,16 +18,19 @@ const MAX_POLYGON_SIZE = 100;
 
 export const MAX_SCALE = 4;
 
+function getPNG(e) {
+    e.target.href = document.getElementById('canvas-display').toDataURL('image/png');
+}
+
 function getSVG(e) {
     e.target.href = 'data:image/svg+xml;base64,\n' + base64.encode(eSVG());
 }
-
 
 const Evolve = ({
     inputImage,
     canvasWidth, canvasHeight, scale, evolutionState,
     maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, secondsRun, numSteps, numPolygons,
-    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange, onGetSVG
+    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange
 }) => (
     <div id="dt-dash">
         <div className="left-col">
@@ -39,7 +42,7 @@ const Evolve = ({
         <div className="right-col">
             <h2>Controls</h2>
             <div>
-                <a className="get-svg" download="dirtytriangles.svg" onClick={getSVG}>SVG</a>
+                <span className="download-image"><a className="get-png" download="dirtytriangles.png" onClick={getPNG}>PNG</a> <a className="get-svg" download="dirtytriangles.svg" onClick={getSVG}>SVG</a></span>
                 <span className={'play ' + evolutionState} onClick={onPlay}>▶️</span> <span
                 className={'pause ' + evolutionState} onClick={onPause}>⏸</span>
             </div>

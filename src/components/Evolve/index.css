@@ -4,11 +4,11 @@
     justify-items: center;
 }
 
-#dt-dash .get-svg {
+#dt-dash .download-image {
     float: right;
 }
 
-#dt-dash .get-svg, #dt-dash .input-target-file {
+#dt-dash .download-image a, #dt-dash .input-target-file {
     display: inline-block;
     cursor: pointer;
     color: #45bff6;
