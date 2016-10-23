@@ -1,12 +1,24 @@
 #dt-footer {
     background-color: #0a8fcb;
-    text-align: center;
     padding: 1em;
     color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#dt-app #dt-footer .links {
+    width: auto;
 }
 
 #dt-app #dt-footer a {
     margin: 0 2em;
     color: #fff;
-    text-decoration: none;
+    outline: none;
+}
+
+#dt-app #dt-footer .version {
+    position: absolute;
+    right: 1em;
+    bottom: 20px;
 }
