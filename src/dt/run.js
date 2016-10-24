@@ -56,24 +56,14 @@ export function ePause() {
 }
 
 export function eSVG() {
-    let svgStr = '<?xml version="1.0" encoding="utf-8"?>';
-    svgStr += '<!-- Made with dirtytriangles.com -->';
-    svgStr += '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-    svgStr += '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" version="1.1" baseProfile="full" width="' + evolver.imgWidth + 'px" height="' + evolver.imgHeight + 'px">';
-
-    evolver.polySetBest.forEach(function (poly) {
-        svgStr += '<polygon points="';
-        for (let j = 0; j < poly.coords.length; j += 2) {
-            svgStr += poly.coords[j] + ' ' + poly.coords[j + 1] + ' ';
-        }
-        svgStr += '" fill="rgb(';
-        svgStr += poly.colour.r + ',';
-        svgStr += poly.colour.g + ',';
-        svgStr += poly.colour.b + ')" opacity="';
-        svgStr += poly.colour.a + '" />';
-    });
-    svgStr += '<\/svg>';
-
-    return svgStr;
-
+    const s = evolver.scale;
+    return `<?xml version="1.0" encoding="utf-8"?>
+<!-- Made with dirtytriangles.com -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="${evolver.imgWidth * s}px" height="${evolver.imgHeight * s}px">
+${evolver.polySetBest.map(function (poly) {
+        return `<polygon points="${poly.coords.map(function (c) {
+            return c * s
+        }).join(' ')}" fill="rgb(${poly.colour.r},${poly.colour.g},${poly.colour.b})" opacity="${poly.colour.a}"/>`;
+    }).join()}</svg>`;
 }
