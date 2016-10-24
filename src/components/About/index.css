@@ -1,4 +1,10 @@
+#dt-about .illustration {
+    width: 200px;
+    font-size: small;
+    text-align: justify;
+}
+
 #dt-about .down-arrow {
-    margin-left: 80px;
-    font-size: 40px;
+    margin-left: 85px;
+    font-size: 30px;
 }

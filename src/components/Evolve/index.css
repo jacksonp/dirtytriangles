@@ -13,6 +13,10 @@
     margin-left: auto;
 }
 
+#dt-dash svg {
+    overflow: visible;
+}
+
 #dt-dash .download-image a, #dt-dash .input-target-file {
     display: inline-block;
     cursor: pointer;
@@ -36,7 +40,7 @@
 }
 
 #dt-dash .left-col, #dt-dash .right-col {
-    flex: 0 1 27em;
+    flex: 0 1 18em;
     padding: 0 1em;
 }
 

@@ -6,6 +6,12 @@
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    color: #333;
+}
+
+#dt-app h2 {
+    font-family: monospace;
+    color: #666;
 }
 
 #dt-app a {

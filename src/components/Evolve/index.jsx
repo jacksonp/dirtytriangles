@@ -44,11 +44,11 @@ const Evolve = ({
             <div className="play-pause-get">
 
                 <svg width="20" height="20" onClick={onPlay}>
-                    <polygon points="0,0 0,20 20,10" fill={evolutionState === 'EVOLUTION_GO' ? '#45bff6' : 'black'}/>
+                    <polygon points="0,0 0,20 20,10" fill={evolutionState === 'EVOLUTION_GO' ? '#45bff6' : '#666'}/>
                 </svg>
                 <svg width="20" height="20" onClick={onPause}>
                     <path d="M0,0 L0,20 L5,20 L5,0 L0,0 M10,0 L10,20 L15,20 L15,0, L10,0"
-                          fill={evolutionState === 'EVOLUTION_PAUSE' ? '#45bff6' : 'black'}/>
+                          fill={evolutionState === 'EVOLUTION_PAUSE' ? '#45bff6' : '#666'}/>
                 </svg>
                 <span className="download-image">
                     <a className="get-png" title="Save this image as a png file." download="dirtytriangles.png"
