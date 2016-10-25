@@ -43,39 +43,43 @@ const Evolve = ({
             { inputImage ? <canvas id="canvas-display" width={canvasWidth} height={canvasHeight}/> : null }
         </div>
         <div className="right-col">
-            <h2>Controls</h2>
-            <div className="play-pause-get">
 
-                <svg width="20" height="20" onClick={onPlay}>
-                    <polygon points="0,0 0,20 20,10" fill={evolutionState === 'EVOLUTION_GO' ? '#45bff6' : '#666'}/>
-                </svg>
-                <svg width="20" height="20" onClick={onPause}>
-                    <path d="M0,0 L0,20 L5,20 L5,0 L0,0 M10,0 L10,20 L15,20 L15,0, L10,0"
-                          fill={evolutionState === 'EVOLUTION_PAUSE' ? '#45bff6' : '#666'}/>
-                </svg>
-                <span className="download-image">
+            <Collapse defaultActiveKey="0">
+                <Panel header="Controls">
+                    <div className="play-pause-get">
+
+                        <svg width="20" height="20" onClick={onPlay}>
+                            <polygon points="0,0 0,20 20,10"
+                                     fill={evolutionState === 'EVOLUTION_GO' ? '#45bff6' : '#666'}/>
+                        </svg>
+                        <svg width="20" height="20" onClick={onPause}>
+                            <path d="M0,0 L0,20 L5,20 L5,0 L0,0 M10,0 L10,20 L15,20 L15,0, L10,0"
+                                  fill={evolutionState === 'EVOLUTION_PAUSE' ? '#45bff6' : '#666'}/>
+                        </svg>
+                        <span className="download-image">
                     <a title="Save this image as a png file." download="dirtytriangles.png" onClick={getPNG}>PNG</a> <a
-                    title="Save this image as an svg file." download="dirtytriangles.svg" onClick={getSVG}>SVG</a>
+                            title="Save this image as an svg file." download="dirtytriangles.svg"
+                            onClick={getSVG}>SVG</a>
                 </span>
-            </div>
-            <p>Max Polygon Count</p>
-            <Rcslider defaultValue={maxPolygons} step={10} min={MIN_POLYGONS} max={MAX_POLYGONS}
-                      onChange={onMaxPolygonsChange}/>
-            <p>Polygon Vertices</p>
-            <Rcslider range={true} defaultValue={[minVertices, maxVertices]} min={MIN_VERTICES} max={MAX_VERTICES}
-                      onChange={onNumVerticesChange}/>
-            <p>Polygon Size %</p>
-            <Rcslider range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={MIN_POLYGON_SIZE}
-                      max={MAX_POLYGON_SIZE} onChange={onPolygonSizeChange}/>
-            <p>Target Scale</p>
-            <Rcslider defaultValue={scale} min={0} max={MAX_SCALE} onChange={onScaleChange} included={false}
-                      marks={{0: '1/256', 1: '1/64', 2: '1/16', 3: '1/4', 4: '1/1'}}/>
-            <p>
-                <label className="input-target-file">
-                    New Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
-                </label>
-            </p>
-            <Collapse>
+                    </div>
+                    <p>Max Polygon Count</p>
+                    <Rcslider defaultValue={maxPolygons} step={10} min={MIN_POLYGONS} max={MAX_POLYGONS}
+                              onChange={onMaxPolygonsChange}/>
+                    <p>Polygon Vertices</p>
+                    <Rcslider range={true} defaultValue={[minVertices, maxVertices]} min={MIN_VERTICES}
+                              max={MAX_VERTICES} onChange={onNumVerticesChange}/>
+                    <p>Polygon Size %</p>
+                    <Rcslider range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={MIN_POLYGON_SIZE}
+                              max={MAX_POLYGON_SIZE} onChange={onPolygonSizeChange}/>
+                    <p>Target Scale</p>
+                    <Rcslider defaultValue={scale} min={0} max={MAX_SCALE} onChange={onScaleChange} included={false}
+                              tipFormatter={(v) => `1/${Math.pow(2, 2 * (4 - v))}`}/>
+                    <p>
+                        <label className="input-target-file">
+                            New Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
+                        </label>
+                    </p>
+                </Panel>
                 <Panel header="Stats" className="stats-header">
                     <table className="stats">
                         <tbody>
