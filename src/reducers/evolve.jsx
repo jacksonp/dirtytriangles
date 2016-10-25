@@ -9,6 +9,7 @@ import {
 } from '../actions/types'
 
 const MAX_CANVAS_DIMENSION = 512;
+const MIN_SCALE_DENOMINATOR = 16;
 
 const initialState = {
     inputImage: null,
@@ -47,6 +48,10 @@ const evolve = (state = initialState, action) => {
                     height = MAX_CANVAS_DIMENSION;
                 }
             }
+
+            width -= width % MIN_SCALE_DENOMINATOR;
+            height -= height % MIN_SCALE_DENOMINATOR;
+
             return Object.assign({}, state, {
                 inputImage: action.inputImage,
                 canvasWidth: width,
