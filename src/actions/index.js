@@ -59,12 +59,13 @@ export function evolutionSetState(evolutionState) {
     }
 }
 
-export function evolutionRedraw({secondsRun, numSteps, numPolygons}) {
+export function evolutionRedraw({secondsRun, numSteps, numPolygons, stepsPerSec}) {
     return {
         type: EVOLUTION_REDRAW,
         secondsRun: secondsRun,
         numSteps: numSteps,
-        numPolygons: numPolygons
+        numPolygons: numPolygons,
+        stepsPerSec: stepsPerSec
     }
 }
 
@@ -83,13 +84,18 @@ export function evolutionChangeState(evolutionState) {
             case 'EVOLUTION_GO':
                 if (!evolveIntervalId) {
                     const step = function () {
-                        const state = getState();
-                        for (let i = 0; i < STEPS_PER_INTERVAL * Math.pow(2, (4 - state.scale)); i++) {
+                        const
+                            state = getState(),
+                            doSteps = STEPS_PER_INTERVAL * Math.pow(2, (4 - state.scale)),
+                            startTime = performance.now();
+                        for (let i = 0; i < doSteps; i++) {
                             if (eStep(state) === 0) { // Perfect fitness, say a blank canvas.
                                 evolutionChangeState('EVOLUTION_PAUSE');
                             }
                         }
-                        dispatch(evolutionRedraw(eDraw()));
+                        const newStats = eDraw();
+                        newStats.stepsPerSec = Math.round(1000 * doSteps / (performance.now() - startTime));
+                        dispatch(evolutionRedraw(newStats));
                     };
                     // 0 means go as fast as you can, could be limited to ~4ms intervals
                     evolveIntervalId = setInterval(step, 0);

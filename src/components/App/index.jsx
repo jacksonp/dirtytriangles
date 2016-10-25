@@ -1,5 +1,5 @@
-require('./index.css');
-require('normalize.css/normalize.css');
+import './index.css';
+import 'normalize.css/normalize.css';
 
 import React from 'react';
 import Header from '../Header/';

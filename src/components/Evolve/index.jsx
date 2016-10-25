@@ -1,11 +1,13 @@
-require('rc-slider/assets/index.css');
-require('./index.css');
+import 'rc-slider/assets/index.css';
+import 'rc-collapse/assets/index.css';
+import './index.css';
 
+import Collapse, {Panel} from 'rc-collapse';
 import React, {PropTypes} from 'react';
 import Rcslider from 'rc-slider'
+import base64 from 'base-64'
 import About from '../About/';
 import {eSVG} from '../../dt/run'
-import base64 from 'base-64'
 
 const MIN_POLYGONS = 10;
 const MAX_POLYGONS = 500;
@@ -29,7 +31,8 @@ function getSVG(e) {
 const Evolve = ({
     inputImage,
     canvasWidth, canvasHeight, scale, evolutionState,
-    maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, secondsRun, numSteps, numPolygons,
+    maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize,
+    secondsRun, numSteps, numPolygons, stepsPerSec,
     onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange
 }) => (
     <div id="dt-dash">
@@ -51,9 +54,8 @@ const Evolve = ({
                           fill={evolutionState === 'EVOLUTION_PAUSE' ? '#45bff6' : '#666'}/>
                 </svg>
                 <span className="download-image">
-                    <a className="get-png" title="Save this image as a png file." download="dirtytriangles.png"
-                       onClick={getPNG}>PNG</a> <a clalossName="get-svg" title="Save this image as an svg file."
-                                                   download="dirtytriangles.svg" onClick={getSVG}>SVG</a>
+                    <a title="Save this image as a png file." download="dirtytriangles.png" onClick={getPNG}>PNG</a> <a
+                    title="Save this image as an svg file." download="dirtytriangles.svg" onClick={getSVG}>SVG</a>
                 </span>
             </div>
             <p>Max Polygon Count</p>
@@ -68,23 +70,27 @@ const Evolve = ({
             <p>Target Scale</p>
             <Rcslider defaultValue={scale} min={0} max={MAX_SCALE} onChange={onScaleChange} included={false}
                       marks={{0: '1/256', 1: '1/64', 2: '1/16', 3: '1/4', 4: '1/1'}}/>
-            <table className="stats">
-                <tbody>
-                <tr>
-                    <td>Steps/sec</td>
-                    <td className="num">{secondsRun ? Math.round(numSteps / secondsRun) : 0}</td>
-                </tr>
-                <tr>
-                    <td>Polygons</td>
-                    <td className="num">{numPolygons}</td>
-                </tr>
-                </tbody>
-            </table>
             <p>
                 <label className="input-target-file">
                     New Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
                 </label>
             </p>
+            <Collapse>
+                <Panel header="Stats" className="stats-header">
+                    <table className="stats">
+                        <tbody>
+                        <tr>
+                            <td>Steps/sec</td>
+                            <td className="num">{stepsPerSec}</td>
+                        </tr>
+                        <tr>
+                            <td>Polygons</td>
+                            <td className="num">{numPolygons}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </Panel>
+            </Collapse>
         </div>
     </div>
 );

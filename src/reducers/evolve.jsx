@@ -25,7 +25,8 @@ const initialState = {
     secondsRun: 0,
     numSteps: 0,
     numPolygons: 0,
-    scale: 2 // i.e. 1/16
+    scale: 2, // i.e. 1/16
+    stepsPerSec: 0 // recent, not overall
 };
 
 const evolve = (state = initialState, action) => {
@@ -77,7 +78,8 @@ const evolve = (state = initialState, action) => {
             return Object.assign({}, state, {
                 secondsRun: action.secondsRun,
                 numSteps: action.numSteps,
-                numPolygons: action.numPolygons
+                numPolygons: action.numPolygons,
+                stepsPerSec: action.stepsPerSec
             });
         default:
             return state

@@ -61,10 +61,11 @@
     cursor: pointer;
 }
 
-#dt-dash .stats {
-    margin-top: 2.5em;
+#dt-dash h2.stats-header {
+    margin-top: 1.5em;
 }
 
 #dt-dash .stats td.num {
     text-align: right;
+    width: 5em;
 }
