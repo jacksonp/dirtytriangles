@@ -71,6 +71,10 @@ export function evolutionRedraw({secondsRun, numSteps, numPolygons, stepsPerSec}
 
 export function evolutionChangeState(evolutionState) {
 
+    let
+        lastStatsUpdate = performance.now(),
+        stepsSinceLastStatsUpdate = 0;
+
     return function (dispatch, getState) {
 
         switch (evolutionState) {
@@ -86,16 +90,29 @@ export function evolutionChangeState(evolutionState) {
                     const step = function () {
                         const
                             state = getState(),
-                            doSteps = STEPS_PER_INTERVAL * Math.pow(2, (4 - state.scale)),
-                            startTime = performance.now();
+                            now = performance.now(),
+                            doSteps = STEPS_PER_INTERVAL * Math.pow(2, (4 - state.scale));
+                        let stepsPerSec = null;
+
+                        if (now - lastStatsUpdate > 500) { // update stats twice per second
+                            stepsPerSec = Math.round(1000 * stepsSinceLastStatsUpdate / (now - lastStatsUpdate));
+                            lastStatsUpdate = now;
+                            stepsSinceLastStatsUpdate = 0;
+                        }
+
                         for (let i = 0; i < doSteps; i++) {
                             if (eStep(state) === 0) { // Perfect fitness, say a blank canvas.
                                 evolutionChangeState('EVOLUTION_PAUSE');
                             }
                         }
+
+                        stepsSinceLastStatsUpdate += doSteps;
+
                         const newStats = eDraw();
-                        newStats.stepsPerSec = Math.round(1000 * doSteps / (performance.now() - startTime));
-                        dispatch(evolutionRedraw(newStats));
+                        if (stepsPerSec !== null) {
+                            newStats.stepsPerSec = stepsPerSec;
+                            dispatch(evolutionRedraw(newStats));
+                        }
                     };
                     // 0 means go as fast as you can, could be limited to ~4ms intervals
                     evolveIntervalId = setInterval(step, 0);

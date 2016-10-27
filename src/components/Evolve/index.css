@@ -41,6 +41,7 @@
 
 #dt-dash .left-col, #dt-dash .right-col {
     flex: 0 1 18em;
+    min-width: 160px;
     padding: 0 1em;
 }
 
