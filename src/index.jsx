@@ -27,3 +27,11 @@ render(
 );
 
 store.dispatch(setImageSrc('/img/marilyn.jpg'));
+
+setTimeout(function () {
+    window.onbeforeunload = function (e) {
+        var msg = 'Are you sure you want to leave this page?';
+        e.returnValue = msg; // most browsers
+        return msg; // safari
+    };
+}, 1800000);
