@@ -58,14 +58,14 @@ export class Poly {
                 r: c,
                 g: c,
                 b: c,
-                a: 0.1
+                a: rng.getFloat(1.0)
             };
         } else {
             return {
                 r: rng.getInt(255),
                 g: rng.getInt(255),
                 b: rng.getInt(255),
-                a: 0.1
+                a: rng.getFloat(1.0)
             };
         }
     }

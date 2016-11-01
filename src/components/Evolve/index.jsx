@@ -8,6 +8,7 @@ import Rcslider from 'rc-slider'
 import base64 from 'base-64'
 import About from '../About/';
 import {eSVG} from '../../dt/run'
+import {MUTATION} from '../../dt/mutate'
 
 const MIN_POLYGONS = 10;
 const MAX_POLYGONS = 500;
@@ -31,9 +32,9 @@ function getSVG(e) {
 const Evolve = ({
     inputImage,
     canvasWidth, canvasHeight, scale, evolutionState,
-    maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize,
+    maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, mutateFn,
     secondsRun, numSteps, numPolygons, stepsPerSec,
-    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange
+    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange, onMutationTypeChange
 }) => (
     <div id="dt-dash">
         <div className="left-col">
@@ -74,6 +75,11 @@ const Evolve = ({
                     <p>Target Scale</p>
                     <Rcslider defaultValue={scale} min={0} max={MAX_SCALE} onChange={onScaleChange} included={false}
                               tipFormatter={(v) => `1/${Math.pow(2, 2 * (4 - v))}`}/>
+                    <p>Mutation</p>
+                    <select defaultValue={mutateFn}
+                            onChange={onMutationTypeChange}>{Object.keys(MUTATION).map(function (k) {
+                        return <option value={MUTATION[k]} key={MUTATION[k]}>{k}</option>
+                    })}</select>
                     <p>
                         <label className="input-target-file">
                             New Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
@@ -113,7 +119,8 @@ Evolve.propTypes = {
     onMaxPolygonsChange: PropTypes.func.isRequired,
     onNumVerticesChange: PropTypes.func.isRequired,
     onPolygonSizeChange: PropTypes.func.isRequired,
-    onScaleChange: PropTypes.func.isRequired
+    onScaleChange: PropTypes.func.isRequired,
+    onMutationTypeChange: PropTypes.func.isRequired,
 };
 
 export default Evolve;

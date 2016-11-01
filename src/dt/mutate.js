@@ -2,6 +2,17 @@ import * as rng from './rng'
 import {clamp, calcMaxDim} from './utils'
 import {Poly} from './polys'
 
+export const MUTATION = Object.freeze({
+    'Delta': 'delta',
+    'Gaussian': 'gaussian',
+    'Random Value - One Attribute': 'randomOne',
+    'Random Value - All Attributes': 'randomAll',
+    'Add Vertex': 'addVertex',
+    'Random Mutation - Each Step': 'randomFn',
+    // 'Rotate Mutations': 'rotateFns',
+    'Random Mutation - Weighted': 'weighted'
+});
+
 /*
  * Mutate functions modify the objects in place, and return the index of the polygon that was modified.
  *
@@ -391,6 +402,10 @@ export default class Mutate {
         // failsafe: should never get here
         return this.randomFn(polySet, state);
 
+    }
+
+    applyMutation(name, polySet, state) {
+        return this[name](polySet, state);
     }
 
 }

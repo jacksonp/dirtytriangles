@@ -40,7 +40,7 @@
 }
 
 #dt-dash .left-col, #dt-dash .right-col {
-    flex: 0 1 18em;
+    flex: 0 1 19em;
     min-width: 160px;
     padding: 0 1em;
 }
@@ -61,6 +61,13 @@
 #dt-dash svg {
     margin-right: 20px;
     cursor: pointer;
+}
+
+#dt-dash .right-col select {
+    font-size: small;
+    background: transparent;
+    border: none;
+    color: #45bff6;
 }
 
 #dt-dash h2.stats-header {

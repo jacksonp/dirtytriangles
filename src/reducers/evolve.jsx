@@ -5,8 +5,11 @@ import {
     CHANGE_NUM_VERTICES,
     CHANGE_POLYGON_SIZE,
     CHANGE_SCALE,
-    EVOLUTION_REDRAW
+    EVOLUTION_REDRAW,
+    CHANGE_MUTATION_TYPE
 } from '../actions/types'
+
+import {MUTATION} from '../dt/mutate'
 
 const MAX_CANVAS_DIMENSION = 512;
 const MIN_SCALE_DENOMINATOR = 16;
@@ -21,7 +24,7 @@ const initialState = {
     maxVertices: 5,
     minPolygonSize: 1,
     maxPolygonSize: 15,
-    mutateFn: 'randomFn',
+    mutateFn: MUTATION['Random Mutation - Each Step'],
     stepsBeforeHeuristics: 20000,
     secondsRun: 0,
     numSteps: 0,
@@ -85,6 +88,10 @@ const evolve = (state = initialState, action) => {
                 numSteps: action.numSteps,
                 numPolygons: action.numPolygons,
                 stepsPerSec: action.stepsPerSec
+            });
+        case CHANGE_MUTATION_TYPE:
+            return Object.assign({}, state, {
+                mutateFn: action.mutateFn
             });
         default:
             return state

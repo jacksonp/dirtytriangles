@@ -5,7 +5,8 @@ import {
     changeMaxPolygons,
     changeNumVertices,
     changePolygonSize,
-    changeScale
+    changeScale,
+    changeMutationType
 } from '../actions'
 import Evolve from '../components/Evolve/'
 
@@ -21,6 +22,7 @@ const mapStateToProps = (state) => {
         maxVertices: state.maxVertices,
         minPolygonSize: state.minPolygonSize,
         maxPolygonSize: state.maxPolygonSize,
+        mutateFn: state.mutateFn,
         secondsRun: state.secondsRun,
         numSteps: state.numSteps,
         numPolygons: state.numPolygons,
@@ -50,6 +52,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onScaleChange: (scale) => {
             dispatch(changeScale(scale))
+        },
+        onMutationTypeChange: (event) => {
+            dispatch(changeMutationType(event.target.value))
         }
     }
 };

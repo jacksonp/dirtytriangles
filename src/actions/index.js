@@ -5,7 +5,8 @@ import {
     CHANGE_NUM_VERTICES,
     CHANGE_POLYGON_SIZE,
     CHANGE_SCALE,
-    EVOLUTION_REDRAW
+    EVOLUTION_REDRAW,
+    CHANGE_MUTATION_TYPE
 } from './types'
 import {eCreate, eStep, eDraw, ePause} from '../dt/run'
 
@@ -154,5 +155,12 @@ export function changeScale(scale) {
     return {
         type: CHANGE_SCALE,
         scale: scale
+    }
+}
+
+export function changeMutationType(mutationType) {
+    return {
+        type: CHANGE_MUTATION_TYPE,
+        mutateFn: mutationType
     }
 }

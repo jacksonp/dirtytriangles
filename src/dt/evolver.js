@@ -247,7 +247,7 @@ export default class Evolver {
         //}
 
         // returns the index of the mutated poly if mutation tool place, null if no mutation took place:
-        mutateRes = this.mutator[state.mutateFn](this.polySetWorking, state);
+        mutateRes = this.mutator.applyMutation(state.mutateFn, this.polySetWorking, state);
 
         this.stats.mutationFns.calls[mutateRes.type] += 1;
 
