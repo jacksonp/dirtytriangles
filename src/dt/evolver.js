@@ -239,7 +239,7 @@ export default class Evolver {
             this._removeAUselessPoly(state.cullQualityThreshold / 100); // % to ratio
         }
 
-        if (this.breakUpPolys && numSteps % 131 === 0) { // 131 is prime
+        if (this.breakUpPolys && this.polySetWorking.length < state.maxPolygons && numSteps % 131 === 0) { // 131 is prime
             this._breakUpPoly();
         }
 
