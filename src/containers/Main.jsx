@@ -6,7 +6,8 @@ import {
     changeNumVertices,
     changePolygonSize,
     changeScale,
-    changeMutationType
+    changeMutationType,
+    changeCullQualityThreshold
 } from '../actions'
 import Evolve from '../components/Evolve/'
 
@@ -26,7 +27,8 @@ const mapStateToProps = (state) => {
         secondsRun: state.secondsRun,
         numSteps: state.numSteps,
         numPolygons: state.numPolygons,
-        stepsPerSec: state.stepsPerSec
+        stepsPerSec: state.stepsPerSec,
+        cullQualityThreshold: state.cullQualityThreshold
     }
 };
 
@@ -55,6 +57,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onMutationTypeChange: (event) => {
             dispatch(changeMutationType(event.target.value))
+        },
+        onCullQualityThresholdChange: (cullQualityThreshold) => {
+            dispatch(changeCullQualityThreshold(cullQualityThreshold))
         }
     }
 };

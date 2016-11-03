@@ -9,7 +9,7 @@ import Mutate from './mutate'
 export default class Evolver {
 
     constructor(inputImage, imgWidthNoMargin, imgHeightNoMargin, margin,
-                palette, breakUpPolys, removeAUselessVertex, removeAUselessPoly,
+                palette, breakUpPolys, removeAUselessVertex,
                 stepsBeforeHeuristics, scale, ctxDisplay) {
 
         this.inputImage = inputImage;
@@ -40,7 +40,6 @@ export default class Evolver {
         this.palette = palette;
         this.breakUpPolys = breakUpPolys;
         this.removeAUselessVertex = removeAUselessVertex;
-        this.removeAUselessPoly = removeAUselessPoly;
         this.ctxDisplay = ctxDisplay;
 
         this.polySetWorking = [];
@@ -236,8 +235,8 @@ export default class Evolver {
             this._removeAUselessVertex();
         }
 
-        if (this.removeAUselessPoly && this.polySetWorking.length > 1 && numSteps % 97 === 0) { //97 is prime
-            this._removeAUselessPoly(this.removeAUselessPoly);
+        if (state.cullQualityThreshold > 0 && this.polySetWorking.length > 1 && numSteps % 97 === 0) { //97 is prime
+            this._removeAUselessPoly(state.cullQualityThreshold / 100); // % to ratio
         }
 
         if (this.breakUpPolys && numSteps % 131 === 0) { // 131 is prime

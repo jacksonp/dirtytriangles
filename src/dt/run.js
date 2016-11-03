@@ -18,7 +18,7 @@ export function eCreate(state) {
     const scale = calculateScale(state.scale);
 
     evolver = new Evolver(state.inputImage, state.canvasWidth / scale, state.canvasHeight / scale, 0,
-        '24-bit', true, true, 0.75,
+        '24-bit', true, true,
         state.stepsBeforeHeuristics, scale, ctxDisplay
     );
     totMillis = 0;

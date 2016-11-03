@@ -6,7 +6,8 @@ import {
     CHANGE_POLYGON_SIZE,
     CHANGE_SCALE,
     EVOLUTION_REDRAW,
-    CHANGE_MUTATION_TYPE
+    CHANGE_MUTATION_TYPE,
+    CHANGE_CULL_QUALITY_THRESHOLD
 } from './types'
 import {eCreate, eStep, eDraw, ePause} from '../dt/run'
 
@@ -162,5 +163,12 @@ export function changeMutationType(mutationType) {
     return {
         type: CHANGE_MUTATION_TYPE,
         mutateFn: mutationType
+    }
+}
+
+export function changeCullQualityThreshold(cullQualityThreshold) {
+    return {
+        type: CHANGE_CULL_QUALITY_THRESHOLD,
+        cullQualityThreshold: cullQualityThreshold
     }
 }

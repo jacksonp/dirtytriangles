@@ -10,16 +10,20 @@ import About from '../About/';
 import {eSVG} from '../../dt/run'
 import {MUTATION} from '../../dt/mutate'
 
-const MIN_POLYGONS = 10;
-const MAX_POLYGONS = 500;
+const POLYGONS_MIN = 10;
+const POLYGONS_MAX = 500;
 
-const MIN_VERTICES = 3;
-const MAX_VERTICES = 15;
+const VERTICES_MIN = 3;
+const VERTICES_MAX = 15;
 
-const MIN_POLYGON_SIZE = 1;
-const MAX_POLYGON_SIZE = 100;
+const POLYGON_SIZE_MIN = 1;
+const POLYGON_SIZE_MAX = 100;
 
-export const MAX_SCALE = 4;
+const CULL_QUALITY_THRESHOLD_MIN = 0;
+const CULL_QUALITY_THRESHOLD_MAX = 75;
+const CULL_QUALITY_THRESHOLD_STEP = 5;
+
+export const SCALE_MAX = 4;
 
 function getPNG(e) {
     e.target.href = document.getElementById('canvas-display').toDataURL('image/png');
@@ -32,9 +36,9 @@ function getSVG(e) {
 const Evolve = ({
     inputImage,
     canvasWidth, canvasHeight, scale, evolutionState,
-    maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, mutateFn,
+    maxPolygons, minVertices, maxVertices, minPolygonSize, maxPolygonSize, mutateFn, cullQualityThreshold,
     secondsRun, numSteps, numPolygons, stepsPerSec,
-    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange, onMutationTypeChange
+    onInputImageChange, onPlay, onPause, onMaxPolygonsChange, onNumVerticesChange, onPolygonSizeChange, onScaleChange, onMutationTypeChange, onCullQualityThresholdChange
 }) => (
     <div id="dt-dash">
         <div className="left-col">
@@ -64,22 +68,27 @@ const Evolve = ({
                 </span>
                     </div>
                     <p>Max Polygon Count</p>
-                    <Rcslider defaultValue={maxPolygons} step={10} min={MIN_POLYGONS} max={MAX_POLYGONS}
+                    <Rcslider defaultValue={maxPolygons} step={10} min={POLYGONS_MIN} max={POLYGONS_MAX}
                               onChange={onMaxPolygonsChange}/>
                     <p>Polygon Vertices</p>
-                    <Rcslider range={true} defaultValue={[minVertices, maxVertices]} min={MIN_VERTICES}
-                              max={MAX_VERTICES} onChange={onNumVerticesChange}/>
+                    <Rcslider range={true} defaultValue={[minVertices, maxVertices]} min={VERTICES_MIN}
+                              max={VERTICES_MAX} onChange={onNumVerticesChange}/>
                     <p>Polygon Size %</p>
-                    <Rcslider range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={MIN_POLYGON_SIZE}
-                              max={MAX_POLYGON_SIZE} onChange={onPolygonSizeChange}/>
+                    <Rcslider range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={POLYGON_SIZE_MIN}
+                              max={POLYGON_SIZE_MAX} onChange={onPolygonSizeChange}/>
                     <p>Target Scale</p>
-                    <Rcslider defaultValue={scale} min={0} max={MAX_SCALE} onChange={onScaleChange} included={false}
+                    <Rcslider defaultValue={scale} min={0} max={SCALE_MAX} onChange={onScaleChange} included={false}
                               tipFormatter={(v) => `1/${Math.pow(2, 2 * (4 - v))}`}/>
                     <p>Mutation</p>
                     <select defaultValue={mutateFn}
                             onChange={onMutationTypeChange}>{Object.keys(MUTATION).map(function (k) {
                         return <option value={MUTATION[k]} key={MUTATION[k]}>{k}</option>
                     })}</select>
+                    <p>Cull Quality Threshold</p>
+                    <Rcslider defaultValue={cullQualityThreshold} step={CULL_QUALITY_THRESHOLD_STEP}
+                              min={CULL_QUALITY_THRESHOLD_MIN} max={CULL_QUALITY_THRESHOLD_MAX}
+                              onChange={onCullQualityThresholdChange}
+                              tipFormatter={(v) => v === 0 ? 'Cull Nothing' : '<' + v + '%'}/>
                     <p>
                         <label className="input-target-file">
                             New Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
@@ -121,6 +130,7 @@ Evolve.propTypes = {
     onPolygonSizeChange: PropTypes.func.isRequired,
     onScaleChange: PropTypes.func.isRequired,
     onMutationTypeChange: PropTypes.func.isRequired,
+    onCullQualityThresholdChange: PropTypes.func.isRequired,
 };
 
 export default Evolve;

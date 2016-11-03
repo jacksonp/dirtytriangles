@@ -6,7 +6,8 @@ import {
     CHANGE_POLYGON_SIZE,
     CHANGE_SCALE,
     EVOLUTION_REDRAW,
-    CHANGE_MUTATION_TYPE
+    CHANGE_MUTATION_TYPE,
+    CHANGE_CULL_QUALITY_THRESHOLD
 } from '../actions/types'
 
 import {MUTATION} from '../dt/mutate'
@@ -30,7 +31,8 @@ const initialState = {
     numSteps: 0,
     numPolygons: 0,
     scale: 2, // i.e. 1/16
-    stepsPerSec: 0 // recent, not overall
+    stepsPerSec: 0, // recent, not overall
+    cullQualityThreshold: 50
 };
 
 const evolve = (state = initialState, action) => {
@@ -92,6 +94,10 @@ const evolve = (state = initialState, action) => {
         case CHANGE_MUTATION_TYPE:
             return Object.assign({}, state, {
                 mutateFn: action.mutateFn
+            });
+        case CHANGE_CULL_QUALITY_THRESHOLD:
+            return Object.assign({}, state, {
+                cullQualityThreshold: action.cullQualityThreshold
             });
         default:
             return state
