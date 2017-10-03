@@ -1,5 +1,5 @@
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     entry: [
@@ -8,7 +8,7 @@ module.exports = {
         './src/index.jsx'
     ],
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /node-modules/,
@@ -17,12 +17,19 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: 'style!css!'
+                use: [
+                    {
+                        loader: "style-loader"
+                    },
+                    {
+                        loader: "css-loader"
+                    }
+                ]
             }
         ]
     },
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['.js', '.jsx']
     },
     output: {
         path: path.join(__dirname, 'dist'),

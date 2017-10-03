@@ -3,8 +3,9 @@ import 'rc-collapse/assets/index.css';
 import './index.css';
 
 import Collapse, {Panel} from 'rc-collapse';
-import React, {PropTypes} from 'react';
-import Rcslider from 'rc-slider'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Slider, { Range } from 'rc-slider'
 import base64 from 'base-64'
 import About from '../About/';
 import {eSVG} from '../../dt/run'
@@ -68,27 +69,27 @@ const Evolve = ({
                 </span>
                     </div>
                     <p>Max Polygon Count</p>
-                    <Rcslider defaultValue={maxPolygons} step={10} min={POLYGONS_MIN} max={POLYGONS_MAX}
-                              onChange={onMaxPolygonsChange}/>
+                    <Slider defaultValue={maxPolygons} step={10} min={POLYGONS_MIN} max={POLYGONS_MAX}
+                            onChange={onMaxPolygonsChange}/>
                     <p>Polygon Vertices</p>
-                    <Rcslider range={true} defaultValue={[minVertices, maxVertices]} min={VERTICES_MIN}
-                              max={VERTICES_MAX} onChange={onNumVerticesChange}/>
+                    <Range range={true} defaultValue={[minVertices, maxVertices]} min={VERTICES_MIN}
+                            max={VERTICES_MAX} onChange={onNumVerticesChange}/>
                     <p>Polygon Size %</p>
-                    <Rcslider range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={POLYGON_SIZE_MIN}
-                              max={POLYGON_SIZE_MAX} onChange={onPolygonSizeChange}/>
+                    <Range range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={POLYGON_SIZE_MIN}
+                            max={POLYGON_SIZE_MAX} onChange={onPolygonSizeChange}/>
                     <p>Target Scale</p>
-                    <Rcslider defaultValue={scale} min={0} max={SCALE_MAX} onChange={onScaleChange} included={false}
-                              tipFormatter={(v) => `1/${Math.pow(2, 2 * (4 - v))}`}/>
+                    <Slider defaultValue={scale} min={0} max={SCALE_MAX} onChange={onScaleChange} included={false}
+                            tipFormatter={(v) => `1/${Math.pow(2, 2 * (4 - v))}`}/>
                     <p>Mutation</p>
                     <select defaultValue={mutateFn}
                             onChange={onMutationTypeChange}>{Object.keys(MUTATION).map(function (k) {
                         return <option value={MUTATION[k]} key={MUTATION[k]}>{k}</option>
                     })}</select>
                     <p>Cull Quality Threshold</p>
-                    <Rcslider defaultValue={cullQualityThreshold} step={CULL_QUALITY_THRESHOLD_STEP}
-                              min={CULL_QUALITY_THRESHOLD_MIN} max={CULL_QUALITY_THRESHOLD_MAX}
-                              onChange={onCullQualityThresholdChange}
-                              tipFormatter={(v) => v === 0 ? 'Cull Nothing' : '<' + v + '%'}/>
+                    <Slider defaultValue={cullQualityThreshold} step={CULL_QUALITY_THRESHOLD_STEP}
+                            min={CULL_QUALITY_THRESHOLD_MIN} max={CULL_QUALITY_THRESHOLD_MAX}
+                            onChange={onCullQualityThresholdChange}
+                            tipFormatter={(v) => v === 0 ? 'Cull Nothing' : '<' + v + '%'}/>
                     <p>
                         <label className="input-target-file">
                             New Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
