@@ -2,14 +2,18 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
+    mode: 'production',
     entry: './src/index.jsx',
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /node-modules/,
                 include: path.join(__dirname, 'src'),
-                loaders: ['babel-loader']
+                loader: require.resolve('babel-loader'),
+                options: {
+                    presets: ['@babel/preset-env', '@babel/preset-react']
+                }
             },
             {
                 test: /\.css$/,
@@ -32,16 +36,7 @@ module.exports = {
         publicPath: '/',
         filename: 'bundle.[hash].js'
     },
-    devServer: {
-        contentBase: './dist',
-        hot: true
-    },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
         function () {
             this.plugin('done', function (stats) {
                 const
