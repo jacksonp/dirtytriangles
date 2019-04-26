@@ -57,6 +57,7 @@ module.exports = {
         new CleanWebpackPlugin(),
         new CopyPlugin([
             { from: 'src/favicon.ico', to: '' },
+            { from: 'src/robots.txt', to: '' },
             { from: 'src/img', to: 'img/' },
         ]),
     ]
