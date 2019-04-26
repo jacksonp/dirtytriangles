@@ -1,5 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -51,6 +53,11 @@ module.exports = {
             'process.env': {
                 'NODE_ENV': JSON.stringify('production')
             }
-        })
+        }),
+        new CleanWebpackPlugin(),
+        new CopyPlugin([
+            { from: 'src/favicon.ico', to: '' },
+            { from: 'src/img', to: 'img/' },
+        ]),
     ]
 };
