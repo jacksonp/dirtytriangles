@@ -20,7 +20,7 @@ const initialState = {
     canvasWidth: null,
     canvasHeight: null,
     evolutionState: 'EVOLUTION_PAUSE',
-    maxPolygons: 100,
+    maxPolygons: 200,
     minVertices: 3,
     maxVertices: 5,
     minPolygonSize: 1,

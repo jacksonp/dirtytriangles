@@ -26,7 +26,7 @@ render(
     document.getElementById('react-app')
 );
 
-store.dispatch(setImageSrc('/img/marilyn.jpg'));
+store.dispatch(setImageSrc('/img/churchill.jpg'));
 
 setTimeout(function () {
     window.onbeforeunload = function (e) {
