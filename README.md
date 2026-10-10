@@ -1,6 +1,7 @@
 # Dirty Triangles
 
-Evolve images from polygons, see it in action and find out a bit more on [dirtytriangles.jacksonpauls.com](https://dirtytriangles.jacksonpauls.com/).
+
+Evolve images from polygons: watch evolutionary optimisation in your browser. See it in action and find out a bit more on [dirtytriangles.jacksonpauls.com](https://dirtytriangles.jacksonpauls.com/).
 
 ## Run it Locally
 
