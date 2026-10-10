@@ -15,4 +15,4 @@ Then point your browser to: http://localhost:8080/
 
 ## History
 
-Dirty Triangles was originally written in 2011 using in JavaScript, YUI, Node.js and CouchDB. Ported in 2016 to React, Redux, JSX, with the JavaScript bits that do the evolution pretty much just copied over. Currently there's no back-end.
+Dirty Triangles was originally written in 2011 using in JavaScript, YUI, Node.js and CouchDB. Ported in 2016 to React, Redux, JSX, with the JavaScript bits that do the evolution pretty much just copied over. There's no back-end.

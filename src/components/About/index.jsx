@@ -1,13 +1,13 @@
 import 'rc-collapse/assets/index.css';
 import './index.css';
 
-import Collapse, {Panel} from 'rc-collapse';
+import Collapse from 'rc-collapse';
 import React from 'react'
 
 const About = () => (
 
-    <Collapse defaultActiveKey="0">
-        <Panel header="About" className="stats-header">
+    <Collapse defaultActiveKey="0" items={[
+        {key: '0', label: 'About', className: 'stats-header', children: (<>
             <div id="dt-about">
                 <div className="illustration">
                     <img src="/img/polygon_marilyn.gif" alt="Animation: random polygons evolve into Marilyn Monroe"/>
@@ -20,8 +20,8 @@ const About = () => (
                         href="http://alteredqualia.com/visualization/evolve/">first version in JavaScript</a>.</p>
                 </div>
             </div>
-        </Panel>
-    </Collapse>
+        </>)}
+    ]} />
 );
 
 export default About

@@ -1,8 +1,8 @@
 import React from 'react';
-import {render} from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux'
-import thunk from 'redux-thunk';
+import {thunk} from 'redux-thunk';
 import dtApp from './reducers/evolve'
 import App from './components/App/index';
 import {setImageSrc} from './actions'
@@ -12,11 +12,10 @@ const store = createStore(
     applyMiddleware(thunk)
 );
 
-render(
+createRoot(document.getElementById('react-app')).render(
     <Provider store={store}>
         <App/>
-    </Provider>,
-    document.getElementById('react-app')
+    </Provider>
 );
 
 store.dispatch(setImageSrc('/img/churchill.jpg'));

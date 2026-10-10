@@ -1,3 +1,4 @@
+import {flushSync} from 'react-dom';
 import {
     SET_INPUT_IMAGE,
     EVOLUTION_STATE,
@@ -33,7 +34,8 @@ export function setImageSrc(src) {
             if (inputImage.width === 0) {
                 alert('Image could not be loaded.');
             } else {
-                dispatch(loadInputImage(inputImage));
+                // Commit the canvas before the evolver accesses its context.
+                flushSync(() => dispatch(loadInputImage(inputImage)));
                 eCreate(getState());
                 dispatch(evolutionChangeState('EVOLUTION_GO'));
             }

@@ -1,5 +1,5 @@
 import * as rng from './rng'
-import {clamp, calcMaxDim} from './utils'
+import {clamp} from './utils'
 import {Poly} from './polys'
 
 export const MUTATION = Object.freeze({

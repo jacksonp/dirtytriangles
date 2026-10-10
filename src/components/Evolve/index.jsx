@@ -2,10 +2,10 @@ import 'rc-slider/assets/index.css';
 import 'rc-collapse/assets/index.css';
 import './index.css';
 
-import Collapse, {Panel} from 'rc-collapse';
+import Collapse from 'rc-collapse';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Slider, { Range } from 'rc-slider'
+import Slider from 'rc-slider'
 import base64 from 'base-64'
 import About from '../About/';
 import {eSVG} from '../../dt/run'
@@ -50,8 +50,8 @@ const Evolve = ({
         </div>
         <div className="right-col">
 
-            <Collapse defaultActiveKey="0">
-                <Panel header="Controls">
+            <Collapse defaultActiveKey="0" items={[
+                {key: '0', label: 'Controls', children: (<>
                     <div className="play-pause-get">
 
                         <svg width="20" height="20" onClick={onPlay}>
@@ -72,14 +72,14 @@ const Evolve = ({
                     <Slider defaultValue={maxPolygons} step={10} min={POLYGONS_MIN} max={POLYGONS_MAX}
                             onChange={onMaxPolygonsChange}/>
                     <p>Polygon Vertices</p>
-                    <Range range={true} defaultValue={[minVertices, maxVertices]} min={VERTICES_MIN}
+                    <Slider range={true} defaultValue={[minVertices, maxVertices]} min={VERTICES_MIN}
                             max={VERTICES_MAX} onChange={onNumVerticesChange}/>
                     <p>Polygon Size %</p>
-                    <Range range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={POLYGON_SIZE_MIN}
+                    <Slider range={true} defaultValue={[minPolygonSize, maxPolygonSize]} min={POLYGON_SIZE_MIN}
                             max={POLYGON_SIZE_MAX} onChange={onPolygonSizeChange}/>
                     <p>Target Scale</p>
                     <Slider defaultValue={scale} min={0} max={SCALE_MAX} onChange={onScaleChange} included={false}
-                            tipFormatter={(v) => `1/${Math.pow(2, 2 * (4 - v))}`}/>
+                            ariaValueTextFormatterForHandle={(v) => `1/${Math.pow(2, 2 * (4 - v))}`}/>
                     <p>Mutation</p>
                     <select defaultValue={mutateFn}
                             onChange={onMutationTypeChange}>{Object.keys(MUTATION).map(function (k) {
@@ -89,14 +89,14 @@ const Evolve = ({
                     <Slider defaultValue={cullQualityThreshold} step={CULL_QUALITY_THRESHOLD_STEP}
                             min={CULL_QUALITY_THRESHOLD_MIN} max={CULL_QUALITY_THRESHOLD_MAX}
                             onChange={onCullQualityThresholdChange}
-                            tipFormatter={(v) => v === 0 ? 'Cull Nothing' : '<' + v + '%'}/>
+                            ariaValueTextFormatterForHandle={(v) => v === 0 ? 'Cull Nothing' : '<' + v + '%'}/>
                     <p>
                         <label className="input-target-file">
                             New Target Image <input type="file" accept="image/*" onChange={onInputImageChange}/>
                         </label>
                     </p>
-                </Panel>
-                <Panel header="Stats" className="stats-header">
+                </>)},
+                {key: '1', label: 'Stats', className: 'stats-header', children: (<>
                     <table className="stats">
                         <tbody>
                         <tr>
@@ -109,8 +109,8 @@ const Evolve = ({
                         </tr>
                         </tbody>
                     </table>
-                </Panel>
-            </Collapse>
+                </>)}
+            ]} />
         </div>
     </div>
 );
